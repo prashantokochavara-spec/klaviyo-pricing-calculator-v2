@@ -1,0 +1,23 @@
+index.html
+  daef4beae93607fc 15-18,23,30,32-33,37-38,42,48-54,58,60-62,64-66,72,76-78,167-168,175,182-192,204,214,217,230,232-246,255,263,267,269-328,332-334,336-337,341-343,347-408,687,692-695,700,703-704,712-718,741,743,746,748-749,754,759,761-762,766-770,777,783-785,789-790,794,796-797,808-842
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "86c1d7380950ac20a91734ee8b44604a5d6b9481",
+  "prompts": {
+    "daef4beae93607fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ae853a11-f9a5-42c3-a66d-cb601f78aed2",
+        "model": "claude-sonnet-4-5-20250929"
+      },
+      "human_author": "Prashanto Kochavara",
+      "messages": [],
+      "total_additions": 270,
+      "total_deletions": 70,
+      "accepted_lines": 270,
+      "overriden_lines": 0
+    }
+  }
+}
