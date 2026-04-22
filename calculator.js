@@ -927,79 +927,97 @@ function renderRevenueModelingCredits() {
         return;
     }
 
-    let html = '<div class="section">';
+    let html = '<div class="revenue-grid">';
 
-    html += '<h3>Credits-Based Revenue Calculator</h3>';
+    // LEFT PANEL: Usage Inputs
+    html += '<div class="section">';
+    html += '<h2>Monthly Usage</h2>';
     html += '<p style="color: #64748b; margin-bottom: 1.5rem;">Calculate credit usage and find the best package</p>';
-
-    html += '<div class="modeling-grid">';
 
     // Core Data inputs
     html += '<div class="tier-card">';
-    html += '<div class="tier-header"><div class="tier-name-card">Monthly Usage</div></div>';
+    html += '<div class="tier-header"><div class="tier-name-card">Usage Inputs</div></div>';
 
     html += '<div class="input-group">';
     html += '<label for="cred-profiles">Profiles</label>';
-    html += '<input type="number" id="cred-profiles" value="25000" min="0" placeholder="Number of profiles">';
+    html += '<input type="number" id="cred-profiles" value="25000" min="0" placeholder="Number of profiles" oninput="calculateCreditsRevenue()">';
     html += '<small style="color: #64748b;">4 credits per profile/month</small>';
     html += '</div>';
 
     html += '<div class="input-group">';
     html += '<label for="cred-events">Events (per month)</label>';
-    html += '<input type="number" id="cred-events" value="2000000" min="0" placeholder="e.g., 2000000">';
+    html += '<input type="number" id="cred-events" value="2000000" min="0" placeholder="e.g., 2000000" oninput="calculateCreditsRevenue()">';
     html += '<small style="color: #64748b;">3.5 credits per 100 events</small>';
     html += '</div>';
 
     html += '<div class="input-group">';
     html += '<label for="cred-emails">Emails (per month)</label>';
-    html += '<input type="number" id="cred-emails" value="150000" min="0" placeholder="e.g., 150000">';
+    html += '<input type="number" id="cred-emails" value="150000" min="0" placeholder="e.g., 150000" oninput="calculateCreditsRevenue()">';
     html += '<small style="color: #64748b;">25 credits per email</small>';
     html += '</div>';
 
     html += '<div class="input-group">';
     html += '<label for="cred-sms">SMS (per month)</label>';
-    html += '<input type="number" id="cred-sms" value="5000" min="0" placeholder="e.g., 5000">';
+    html += '<input type="number" id="cred-sms" value="5000" min="0" placeholder="e.g., 5000" oninput="calculateCreditsRevenue()">';
     html += '<small style="color: #64748b;">8,500 credits per SMS</small>';
     html += '</div>';
 
     html += '</div>'; // tier-card
 
-    html += '</div>'; // modeling-grid
+    html += '</div>'; // section (left panel)
 
-    html += '<button class="calculate-btn" onclick="calculateCreditsRevenue()">Calculate Credit Usage</button>';
+    // RIGHT PANEL: Results (Sticky)
+    html += '<div class="results-sticky">';
+    html += '<div class="section">';
+    html += '<h2>Credits Summary</h2>';
 
-    // Results
-    html += '<div id="credits-results" style="display: none;" class="results-panel">';
-    html += '<h4>Credits Model Results</h4>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Free Monthly Credits:</span>';
-    html += '<span class="result-value success">50,000 credits</span>';
+    // Main metric card
+    html += '<div class="metric-card">';
+    html += '<div class="metric-label">Monthly Cost</div>';
+    html += '<div class="metric-value" id="cred-monthly-cost">$0</div>';
+    html += '<div class="metric-sublabel">Based on recommended package</div>';
     html += '</div>';
+
+    // Breakdown
+    html += '<div style="margin-top: 1.5rem;">';
+    html += '<h3 style="font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 0.75rem;">Credits Breakdown</h3>';
+
     html += '<div class="result-item">';
     html += '<span class="result-label">Total Credits Needed:</span>';
     html += '<span class="result-value" id="cred-total-credits">0</span>';
     html += '</div>';
+
     html += '<div class="result-item">';
-    html += '<span class="result-label">After Free Credits:</span>';
+    html += '<span class="result-label">Free Monthly Credits:</span>';
+    html += '<span class="result-value success">50,000</span>';
+    html += '</div>';
+
+    html += '<div class="result-item">';
+    html += '<span class="result-label">Credits After Free Tier:</span>';
     html += '<span class="result-value" id="cred-needed-credits">0</span>';
     html += '</div>';
+
     html += '<div class="result-item">';
     html += '<span class="result-label">Recommended Package:</span>';
     html += '<span class="result-value success" id="cred-package">-</span>';
     html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Monthly Cost:</span>';
-    html += '<span class="result-value success" id="cred-monthly-cost">$0</span>';
+
+    html += '<div class="result-item" style="border-top: 2px solid #e2e8f0; padding-top: 0.75rem; margin-top: 0.75rem;">';
+    html += '<span class="result-label" style="font-weight: 600;">Annual Cost (ARR):</span>';
+    html += '<span class="result-value success" id="cred-annual-cost" style="font-weight: 700;">$0</span>';
     html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Annual Cost (ARR):</span>';
-    html += '<span class="result-value success" id="cred-annual-cost">$0</span>';
-    html += '</div>';
-    html += '</div>';
+
+    html += '</div>'; // breakdown
 
     html += '</div>'; // section
+    html += '</div>'; // results-sticky
+
+    html += '</div>'; // revenue-grid
 
     container.innerHTML = html;
+
+    // Trigger initial calculation
+    setTimeout(() => calculateCreditsRevenue(), 100);
 }
 
 // Calculate Revenue Model - Tiered (Live Updates)
@@ -1182,15 +1200,16 @@ function calculateCreditsRevenue() {
     const annualCost = monthlyCost * 12;
 
     // Update display
-    document.getElementById('cred-total-credits').textContent = totalCredits.toLocaleString() + ' credits';
-    document.getElementById('cred-needed-credits').textContent = neededCredits.toLocaleString() + ' credits';
-    document.getElementById('cred-package').textContent = recommendedPackage ? recommendedPackage.name : 'None needed';
-    document.getElementById('cred-monthly-cost').textContent = '$' + monthlyCost.toLocaleString();
-    document.getElementById('cred-annual-cost').textContent = '$' + annualCost.toLocaleString();
+    const updateElement = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    };
 
-    // Show results
-    document.getElementById('credits-results').style.display = 'block';
-    document.getElementById('credits-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    updateElement('cred-total-credits', totalCredits.toLocaleString() + ' credits');
+    updateElement('cred-needed-credits', neededCredits.toLocaleString() + ' credits');
+    updateElement('cred-package', recommendedPackage ? recommendedPackage.name : 'None needed');
+    updateElement('cred-monthly-cost', '$' + monthlyCost.toLocaleString());
+    updateElement('cred-annual-cost', '$' + annualCost.toLocaleString());
 }
 
 // Tab switching
