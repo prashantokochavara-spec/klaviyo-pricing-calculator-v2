@@ -1,0 +1,47 @@
+PRICING_DATA.md
+  daef4beae93607fc 1-787
+DELIVERY_SUMMARY.md
+  daef4beae93607fc 1-539
+REVENUE_MODELING_PROTOTYPE.html
+  daef4beae93607fc 1-804
+README.md
+  daef4beae93607fc 1-710
+LAYOUT_PREVIEW.html
+  daef4beae93607fc 1-499
+START.sh
+  daef4beae93607fc 1-70
+calculator.js
+  daef4beae93607fc 1-610
+COMPREHENSIVE_PRICING_MOCKUP.html
+  daef4beae93607fc 1-866
+index.html
+  daef4beae93607fc 1-597
+.gitignore
+  daef4beae93607fc 1-24
+vercel.json
+  daef4beae93607fc 1-23
+MARGIN_ANALYSIS_PREVIEW.html
+  daef4beae93607fc 1-764
+TESTING_GUIDE.md
+  daef4beae93607fc 1-852
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "36fc27bb5e36b46c4f3b574bc225ef8630acb844",
+  "prompts": {
+    "daef4beae93607fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ae853a11-f9a5-42c3-a66d-cb601f78aed2",
+        "model": "claude-sonnet-4-5-20250929"
+      },
+      "human_author": "Prashanto Kochavara",
+      "messages": [],
+      "total_additions": 7145,
+      "total_deletions": 0,
+      "accepted_lines": 7145,
+      "overriden_lines": 0
+    }
+  }
+}
