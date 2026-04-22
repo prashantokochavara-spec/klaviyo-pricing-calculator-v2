@@ -1,0 +1,23 @@
+index.html
+  daef4beae93607fc 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "68ef7ff32a94be681b0fe726acfe47d318931c3c",
+  "prompts": {
+    "daef4beae93607fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ae853a11-f9a5-42c3-a66d-cb601f78aed2",
+        "model": "claude-sonnet-4-5-20250929"
+      },
+      "human_author": "Prashanto Kochavara",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
