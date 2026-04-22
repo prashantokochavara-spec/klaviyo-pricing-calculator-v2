@@ -83,6 +83,163 @@
             display: block;
         }
 
+        /* Sub-tabs for revenue modeling */
+        .sub-tabs {
+            display: flex;
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0 20px;
+            margin: -20px -40px 30px -40px;
+        }
+
+        .sub-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1em;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .sub-tab:hover {
+            color: #667eea;
+            background: #edf2f7;
+        }
+
+        .sub-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+
+        .sub-tab-content {
+            display: none;
+        }
+
+        .sub-tab-content.active {
+            display: block;
+        }
+
+        /* Card-based layout (cleaner design) */
+        .tier-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .tier-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .tier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tier-name-card {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .tier-price-card {
+            font-size: 1rem;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        /* Intelligence pricing section */
+        .intelligence-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .intelligence-section h3 {
+            color: #78350f;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .intelligence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .intelligence-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #fbbf24;
+        }
+
+        .intelligence-item strong {
+            color: #1e293b;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .intelligence-price {
+            color: #f59e0b;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .intelligence-cost {
+            color: #64748b;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+
+        .markup-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        /* Section styling (like prototypes) */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #475569;
+            margin: 1.5rem 0 1rem 0;
+        }
+
         .model-header {
             text-align: center;
             margin-bottom: 40px;
@@ -538,6 +695,7 @@
             <button class="tab" onclick="switchTab('consumption')">Model 2: Pure Consumption</button>
             <button class="tab" onclick="switchTab('credits')">Model 3: Credits System</button>
             <button class="tab" onclick="switchTab('comparison')">Model Comparison</button>
+            <button class="tab" onclick="switchTab('margins')">Margin Analysis</button>
             <button class="tab" onclick="switchTab('revenue')">Revenue Modeling</button>
         </div>
 
@@ -581,13 +739,45 @@
             </div>
         </div>
 
+        <div id="margins-content" class="tab-content">
+            <div class="model-header">
+                <h2>Margin Analysis</h2>
+                <p>Unit costs, margins, and intelligence pricing</p>
+            </div>
+            <div id="margins-container" class="loading">
+                Loading pricing data...
+            </div>
+        </div>
+
         <div id="revenue-content" class="tab-content">
             <div class="model-header">
                 <h2>Revenue Modeling</h2>
                 <p>Model your revenue targets with customer mix and add-on adoption</p>
             </div>
-            <div id="revenue-container" class="loading">
-                Loading pricing data...
+
+            <!-- Sub-tabs for revenue modeling -->
+            <div class="sub-tabs">
+                <button class="sub-tab active" onclick="switchRevenueTab('tiered')">Tiered Model</button>
+                <button class="sub-tab" onclick="switchRevenueTab('consumption')">Consumption Model</button>
+                <button class="sub-tab" onclick="switchRevenueTab('credits')">Credits Model</button>
+            </div>
+
+            <div id="revenue-tiered-content" class="sub-tab-content active">
+                <div id="revenue-tiered-container" class="loading">
+                    Loading pricing data...
+                </div>
+            </div>
+
+            <div id="revenue-consumption-content" class="sub-tab-content">
+                <div id="revenue-consumption-container" class="loading">
+                    Loading pricing data...
+                </div>
+            </div>
+
+            <div id="revenue-credits-content" class="sub-tab-content">
+                <div id="revenue-credits-container" class="loading">
+                    Loading pricing data...
+                </div>
             </div>
         </div>
     </div>
