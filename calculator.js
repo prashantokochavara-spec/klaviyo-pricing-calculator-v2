@@ -204,6 +204,19 @@ function renderConsumptionModel() {
 
     let html = '';
 
+    // Disclaimer Banner
+    html += '<div class="disclaimer-banner">';
+    html += '<div class="disclaimer-banner-icon">⚠️</div>';
+    html += '<div class="disclaimer-banner-content">';
+    html += '<div class="disclaimer-banner-title">Pricing Estimates - Subject to Change</div>';
+    html += '<div class="disclaimer-banner-text">';
+    html += 'Some unit costs below are concrete while others are best-effort estimates. ';
+    html += 'Additionally, features are currently grouped due to API dependencies (for now). ';
+    html += 'Final pricing and feature groupings need to be confirmed.';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+
     // Free Tier Section
     html += '<div class="price-card">';
     html += '<h3>Free Tier (Always Free)</h3>';
@@ -292,6 +305,19 @@ function renderCreditsModel() {
     }
 
     let html = '';
+
+    // Disclaimer Banner
+    html += '<div class="disclaimer-banner">';
+    html += '<div class="disclaimer-banner-icon">⚠️</div>';
+    html += '<div class="disclaimer-banner-content">';
+    html += '<div class="disclaimer-banner-title">Pricing Estimates - Subject to Change</div>';
+    html += '<div class="disclaimer-banner-text">';
+    html += 'Some credit costs below are concrete while others are best-effort estimates. ';
+    html += 'Additionally, features are currently grouped due to API dependencies (for now). ';
+    html += 'Final pricing and feature groupings need to be confirmed.';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
 
     // Free Credits
     html += '<div class="price-card">';
