@@ -330,7 +330,7 @@ function renderCreditsModel() {
     html += '</div>';
 
     // Credit Costs
-    html += '<h3 style="margin: 40px 0 20px 0; color: #2d3748; font-size: 1.2em;">Credit Costs by Feature</h3>';
+    html += '<h3 style="margin: 40px 0 20px 0; color: #2d3748; font-size: 1em;">Credit Costs by Feature</h3>';
     html += '<div class="pricing-grid">';
 
     // Core Data
