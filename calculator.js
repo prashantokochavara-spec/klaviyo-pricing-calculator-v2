@@ -510,7 +510,7 @@ function renderMarginAnalysis() {
     // Intelligence Premium Pricing
     html += '<div class="intelligence-section">';
     html += '<h3>🤖 Intelligence Layer - Premium Pricing</h3>';
-    html += '<p style="color: #78350f; margin-bottom: 1.5rem;">ML/AI features with 5-10× markup over infrastructure costs</p>';
+    html += '<p style="color: #64748b; margin-bottom: 1.5rem;">ML/AI features with 5-10× markup over infrastructure costs</p>';
 
     html += '<table class="comparison-table" style="background: white;">';
     html += '<thead><tr><th>Intelligence API</th><th>Customer Price</th><th>Infrastructure Cost</th><th>Markup</th><th>Margin</th></tr></thead>';
@@ -539,6 +539,90 @@ function renderMarginAnalysis() {
     html += '</tbody></table>';
     html += '</div>';
 
+    // Add Margin Analysis for All 3 Models
+    html += '<div class="section" style="margin-top: 2rem;">';
+    html += '<h2>Margin Comparison Across Models</h2>';
+
+    html += '<h3 style="color: #065f46; margin-top: 1.5rem;">Model 1: Tiered Bundles</h3>';
+    html += '<p style="color: #64748b; margin-bottom: 1rem;">Predictable monthly pricing with base tier + optional add-ons</p>';
+    html += '<table class="margin-table">';
+    html += '<thead><tr><th>Tier</th><th>Base Margin</th><th>With Typical Add-ons</th><th>With All Add-ons</th></tr></thead>';
+    html += '<tbody>';
+
+    const marginTiers = [
+        { tier: 'Starter', base: '72%', typical: '87%', all: '89%' },
+        { tier: 'Growth', base: '67%', typical: '72%', all: '75%' },
+        { tier: 'Scale', base: '50%', typical: '58%', all: '65%' },
+        { tier: 'Enterprise', base: '67%', typical: '67%', all: '67%' }
+    ];
+
+    marginTiers.forEach(tier => {
+        html += '<tr>';
+        html += `<td class="tier-name">${tier.tier}</td>`;
+        html += `<td class="margin-good">${tier.base}</td>`;
+        html += `<td class="margin-good">${tier.typical}</td>`;
+        html += `<td class="margin-good">${tier.all}</td>`;
+        html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+
+    html += '<h3 style="color: #065f46; margin-top: 1.5rem;">Model 2: Pure Consumption</h3>';
+    html += '<p style="color: #64748b; margin-bottom: 1rem;">Pay-per-use with unit economics (Estimated 70-80% margins on usage)</p>';
+    html += '<table class="margin-table">';
+    html += '<thead><tr><th>Usage Category</th><th>Unit Price</th><th>Unit Cost</th><th>Unit Margin</th></tr></thead>';
+    html += '<tbody>';
+
+    const consumptionMargins = [
+        { cat: 'Profiles', price: '$0.15/1K', cost: '$0.04/1K', margin: '73%' },
+        { cat: 'Events', price: '$12.00/100K', cost: '$3.50/100K', margin: '71%' },
+        { cat: 'Email Send', price: '$0.03/1K', cost: '$0.025/1K', margin: '17%' },
+        { cat: 'SMS Send', price: '$8.50/1K', cost: '$8.50/1K', margin: '0%' },
+        { cat: 'Segments', price: '$0.13/segment', cost: '$0.13/segment', margin: '0%' }
+    ];
+
+    consumptionMargins.forEach(item => {
+        html += '<tr>';
+        html += `<td class="tier-name">${item.cat}</td>`;
+        html += `<td>${item.price}</td>`;
+        html += `<td>${item.cost}</td>`;
+        html += `<td class="${parseInt(item.margin) > 50 ? 'margin-good' : parseInt(item.margin) > 10 ? 'margin-fair' : 'margin-poor'}">${item.margin}</td>`;
+        html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+
+    html += '<h3 style="color: #065f46; margin-top: 1.5rem;">Model 3: Credits System</h3>';
+    html += '<p style="color: #64748b; margin-bottom: 1rem;">Prepaid credits with volume discounts (Margins improve with larger packages)</p>';
+    html += '<table class="margin-table">';
+    html += '<thead><tr><th>Package</th><th>Credits</th><th>Price</th><th>Discount</th><th>Effective Margin</th></tr></thead>';
+    html += '<tbody>';
+
+    const creditMargins = [
+        { pkg: 'Starter', credits: '100K', price: '$100', discount: '0%', margin: '~70%' },
+        { pkg: 'Growth', credits: '500K', price: '$400', discount: '20%', margin: '~75%' },
+        { pkg: 'Scale', credits: '2M', price: '$1,400', discount: '30%', margin: '~77%' },
+        { pkg: 'Enterprise', credits: '10M', price: '$6,000', discount: '40%', margin: '~80%' }
+    ];
+
+    creditMargins.forEach(item => {
+        html += '<tr>';
+        html += `<td class="tier-name">${item.pkg}</td>`;
+        html += `<td>${item.credits}</td>`;
+        html += `<td>${item.price}</td>`;
+        html += `<td>${item.discount}</td>`;
+        html += `<td class="margin-good">${item.margin}</td>`;
+        html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+
+    html += '<div style="background: #fef9e7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 4px; margin-top: 1.5rem; font-size: 0.875rem;">';
+    html += '<strong>Key Insight:</strong> All three models maintain healthy margins (65-80%), with Tiered Bundles offering the most predictability and Credits offering best margins at scale.';
+    html += '</div>';
+
+    html += '</div>';
+
     container.innerHTML = html;
 }
 
@@ -546,84 +630,148 @@ function renderMarginAnalysis() {
 function renderRevenueModelingTiered() {
     const container = document.getElementById('revenue-tiered-container');
     const tiers = pricingData.tiers || [];
-    const margins = pricingData.marginAnalysis;
+    const addons = pricingData.addOnsComposableFeatures || [];
 
-    let html = '<div class="revenue-modeling">';
+    let html = '<div class="revenue-grid">';
 
-    // Customer count inputs
-    html += '<h3>Customer Mix by Tier</h3>';
-    html += '<div class="modeling-grid">';
+    // LEFT PANEL: Customer Inputs
+    html += '<div class="section">';
+    html += '<h2>Customer Distribution by Tier</h2>';
 
     tiers.forEach(tier => {
-        if (tier.id === 'free') return; // Skip free tier for revenue modeling
+        if (tier.id === 'free') return;
+
+        html += '<div class="tier-card">';
+        html += '<div class="tier-header">';
+        html += `<span class="tier-name-card">${tier.name} Tier</span>`;
+        html += `<span class="tier-price-card">$${tier.basePrice.toLocaleString()}/month</span>`;
+        html += '</div>';
 
         html += '<div class="input-group">';
-        html += `<label for="customers-${tier.id}">${tier.name} Tier ($${tier.basePrice.toLocaleString()}/mo)</label>`;
-        html += `<input type="number" id="customers-${tier.id}" value="0" min="0" placeholder="Number of customers">`;
+        html += '<label>Number of Customers</label>';
+        html += `<input type="number" id="tiered-${tier.id}-customers" value="${tier.id === 'starter' ? 100 : tier.id === 'growth' ? 50 : tier.id === 'scale' ? 20 : 5}" min="0" oninput="calculateRevenueTiered()">`;
         html += '</div>';
+
+        // Add-ons for this tier
+        const tierAddons = addons.filter(addon => {
+            const avail = addon.tierAvailability[tier.id];
+            return avail && avail.addonPrice && addon.id !== 'reporting';
+        });
+
+        if (tierAddons.length > 0) {
+            html += '<div class="addon-section">';
+            html += '<h4>Available Add-ons</h4>';
+
+            tierAddons.forEach(addon => {
+                const avail = addon.tierAvailability[tier.id];
+                html += '<div class="addon-item">';
+                html += '<div class="addon-label">';
+                html += `<input type="checkbox" id="tiered-${tier.id}-${addon.id}" ${tier.id === 'growth' && addon.id === 'segments' ? 'checked' : ''} onchange="calculateRevenueTiered()">`;
+                html += `<label for="tiered-${tier.id}-${addon.id}">${addon.name}</label>`;
+                html += '</div>';
+                html += `<span class="addon-price">+$${avail.addonPrice}/mo</span>`;
+                html += '</div>';
+
+                html += '<div class="addon-adoption">';
+                html += `<input type="number" id="tiered-${tier.id}-${addon.id}-adoption" value="${tier.id === 'growth' && addon.id === 'segments' ? 40 : 25}" min="0" max="100" oninput="calculateRevenueTiered()">`;
+                html += '<span>% adoption</span>';
+                html += '</div>';
+            });
+
+            html += '</div>';
+        }
+
+        html += '</div>'; // tier-card
     });
 
+    html += '</div>'; // section (left panel)
+
+    // RIGHT PANEL: Results (Sticky)
+    html += '<div class="results-sticky">';
+    html += '<div class="section">';
+    html += '<h2>Revenue Summary</h2>';
+
+    // Total Revenue Metric Card
+    html += '<div class="metric-card">';
+    html += '<div class="metric-label">Total Monthly Revenue</div>';
+    html += '<div class="metric-value" id="tiered-total-revenue">$0</div>';
     html += '</div>';
 
-    // Add-on selection
-    html += '<h3 style="margin-top: 40px;">Add-on Adoption</h3>';
-    html += '<div class="modeling-grid">';
-
-    const addons = pricingData.addOnsComposableFeatures || [];
-    addons.forEach(addon => {
-        if (addon.id === 'reporting') return; // Skip reporting (included)
-
-        html += '<div class="input-group">';
-        html += `<div class="addon-checkbox">`;
-        html += `<input type="checkbox" id="addon-${addon.id}" value="${addon.id}">`;
-        html += `<label for="addon-${addon.id}">${addon.name}</label>`;
-        html += `</div>`;
-        html += `<label style="margin-top: 10px;">Adoption Rate (%)</label>`;
-        html += `<input type="number" id="adoption-${addon.id}" value="25" min="0" max="100" placeholder="% of customers">`;
-        html += '</div>';
-    });
-
+    // Margin Indicator
+    html += '<div class="margin-indicator">';
+    html += '<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">';
+    html += '<span style="font-weight: 600; color: #1e293b;">Blended Gross Margin</span>';
+    html += '<span id="tiered-margin-percent" style="font-weight: 700; color: #10b981;">0%</span>';
     html += '</div>';
-
-    // Calculate button
-    html += '<button class="calculate-btn" onclick="calculateRevenue()">Calculate Revenue & Margins</button>';
-
-    // Results panel
-    html += '<div id="revenue-results" style="display: none;" class="results-panel">';
-    html += '<h4>Revenue Projection</h4>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Total Customers:</span>';
-    html += '<span class="result-value" id="total-customers">0</span>';
-    html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Base Revenue (Monthly):</span>';
-    html += '<span class="result-value" id="base-revenue">$0</span>';
-    html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Add-on Revenue (Monthly):</span>';
-    html += '<span class="result-value" id="addon-revenue">$0</span>';
-    html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Total Monthly Revenue:</span>';
-    html += '<span class="result-value success" id="total-revenue">$0</span>';
-    html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Annual Revenue (ARR):</span>';
-    html += '<span class="result-value success" id="annual-revenue">$0</span>';
-    html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Estimated Total Cost:</span>';
-    html += '<span class="result-value" id="total-cost">$0</span>';
-    html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Gross Margin:</span>';
-    html += '<span class="result-value success" id="gross-margin">0%</span>';
+    html += '<div class="margin-bar">';
+    html += '<div id="tiered-margin-fill" class="margin-fill" style="width: 0%;">0%</div>';
     html += '</div>';
     html += '</div>';
 
+    // Revenue Breakdown
+    html += '<div class="breakdown">';
+    html += '<h3>Revenue Breakdown</h3>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Base Tier Revenue</span>';
+    html += '<span class="breakdown-value" id="tiered-base-revenue">$0</span>';
     html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Add-on Revenue</span>';
+    html += '<span class="breakdown-value" id="tiered-addon-revenue">$0</span>';
+    html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Total Revenue</span>';
+    html += '<span class="breakdown-value" id="tiered-total-revenue-breakdown">$0</span>';
+    html += '</div>';
+    html += '</div>';
+
+    // Cost Breakdown
+    html += '<div class="breakdown">';
+    html += '<h3>Cost & Margin</h3>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Infrastructure Cost</span>';
+    html += '<span class="breakdown-value" id="tiered-total-cost">$0</span>';
+    html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Gross Profit</span>';
+    html += '<span class="breakdown-value" id="tiered-gross-profit" style="color: #10b981;">$0</span>';
+    html += '</div>';
+    html += '</div>';
+
+    // Customer Distribution
+    html += '<div class="breakdown">';
+    html += '<h3>Customer Distribution</h3>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Starter</span>';
+    html += '<span class="breakdown-value" id="tiered-starter-count">0</span>';
+    html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Growth</span>';
+    html += '<span class="breakdown-value" id="tiered-growth-count">0</span>';
+    html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Scale</span>';
+    html += '<span class="breakdown-value" id="tiered-scale-count">0</span>';
+    html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Enterprise</span>';
+    html += '<span class="breakdown-value" id="tiered-enterprise-count">0</span>';
+    html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Total Customers</span>';
+    html += '<span class="breakdown-value" id="tiered-total-customers">0</span>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '</div>'; // section
+    html += '</div>'; // results-sticky
+
+    html += '</div>'; // revenue-grid
 
     container.innerHTML = html;
+
+    // Initial calculation
+    setTimeout(() => calculateRevenueTiered(), 100);
 }
 
 // Render Revenue Modeling Tool - Consumption Model
@@ -636,12 +784,11 @@ function renderRevenueModelingConsumption() {
         return;
     }
 
-    let html = '<div class="section">';
+    let html = '<div class="revenue-grid">';
 
-    html += '<h3>Usage-Based Revenue Calculator</h3>';
-    html += '<p style="color: #64748b; margin-bottom: 1.5rem;">Enter your expected monthly usage to calculate costs</p>';
-
-    html += '<div class="modeling-grid">';
+    // LEFT PANEL: Usage Inputs
+    html += '<div class="section">';
+    html += '<h2>Monthly Usage</h2>';
 
     // Core Data inputs
     html += '<div class="tier-card">';
@@ -649,20 +796,20 @@ function renderRevenueModelingConsumption() {
 
     html += '<div class="input-group">';
     html += '<label for="cons-profiles">Profiles (in thousands)</label>';
-    html += '<input type="number" id="cons-profiles" value="25" min="0" placeholder="e.g., 25">';
-    html += '<small style="color: #64748b;">$0.15 per 1K profiles/month</small>';
+    html += '<input type="number" id="cons-profiles" value="25" min="0" oninput="calculateConsumptionRevenue()">';
+    html += '<small>$0.15 per 1K profiles/month</small>';
     html += '</div>';
 
     html += '<div class="input-group">';
     html += '<label for="cons-events">Events (in 100Ks)</label>';
-    html += '<input type="number" id="cons-events" value="20" min="0" placeholder="e.g., 20">';
-    html += '<small style="color: #64748b;">$12.00 per 100K events</small>';
+    html += '<input type="number" id="cons-events" value="20" min="0" oninput="calculateConsumptionRevenue()">';
+    html += '<small>$12.00 per 100K events</small>';
     html += '</div>';
 
     html += '<div class="input-group">';
     html += '<label for="cons-custom-objects">Custom Objects (in 10Ks)</label>';
-    html += '<input type="number" id="cons-custom-objects" value="5" min="0" placeholder="e.g., 5">';
-    html += '<small style="color: #64748b;">$0.50 per 10K records/month</small>';
+    html += '<input type="number" id="cons-custom-objects" value="5" min="0" oninput="calculateConsumptionRevenue()">';
+    html += '<small>$0.50 per 10K records/month</small>';
     html += '</div>';
 
     html += '</div>'; // tier-card
@@ -673,14 +820,14 @@ function renderRevenueModelingConsumption() {
 
     html += '<div class="input-group">';
     html += '<label for="cons-emails">Emails (in thousands)</label>';
-    html += '<input type="number" id="cons-emails" value="150" min="0" placeholder="e.g., 150">';
-    html += '<small style="color: #64748b;">$0.03 per 1K emails</small>';
+    html += '<input type="number" id="cons-emails" value="150" min="0" oninput="calculateConsumptionRevenue()">';
+    html += '<small>$0.03 per 1K emails</small>';
     html += '</div>';
 
     html += '<div class="input-group">';
     html += '<label for="cons-sms">SMS (in thousands)</label>';
-    html += '<input type="number" id="cons-sms" value="5" min="0" placeholder="e.g., 5">';
-    html += '<small style="color: #64748b;">$8.50 per 1K SMS</small>';
+    html += '<input type="number" id="cons-sms" value="5" min="0" oninput="calculateConsumptionRevenue()">';
+    html += '<small>$8.50 per 1K SMS</small>';
     html += '</div>';
 
     html += '</div>'; // tier-card
@@ -691,46 +838,83 @@ function renderRevenueModelingConsumption() {
 
     html += '<div class="input-group">';
     html += '<label for="cons-segments">Segments</label>';
-    html += '<input type="number" id="cons-segments" value="50" min="0" placeholder="Number of segments">';
-    html += '<small style="color: #64748b;">$0.13 per segment/month</small>';
+    html += '<input type="number" id="cons-segments" value="50" min="0" oninput="calculateConsumptionRevenue()">';
+    html += '<small>$0.13 per segment/month</small>';
     html += '</div>';
 
     html += '<div class="input-group">';
     html += '<label for="cons-campaigns">Campaigns</label>';
-    html += '<input type="number" id="cons-campaigns" value="10" min="0" placeholder="Number of campaigns">';
-    html += '<small style="color: #64748b;">$0.05 per campaign</small>';
+    html += '<input type="number" id="cons-campaigns" value="10" min="0" oninput="calculateConsumptionRevenue()">';
+    html += '<small>$0.05 per campaign</small>';
     html += '</div>';
 
     html += '</div>'; // tier-card
 
-    html += '</div>'; // modeling-grid
+    html += '</div>'; // section (left panel)
 
-    html += '<button class="calculate-btn" onclick="calculateConsumptionRevenue()">Calculate Consumption Cost</button>';
+    // RIGHT PANEL: Results (Sticky)
+    html += '<div class="results-sticky">';
+    html += '<div class="section">';
+    html += '<h2>Cost Summary</h2>';
 
-    // Results
-    html += '<div id="consumption-results" style="display: none;" class="results-panel">';
-    html += '<h4>Consumption Model Results</h4>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Free Tier Credit:</span>';
-    html += '<span class="result-value success">-$50.00</span>';
+    // Total Cost Metric Card
+    html += '<div class="metric-card">';
+    html += '<div class="metric-label">Monthly Cost (after credit)</div>';
+    html += '<div class="metric-value" id="cons-final-cost">$0</div>';
     html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Total Usage Cost:</span>';
-    html += '<span class="result-value" id="cons-total-cost">$0</span>';
+
+    // Cost Breakdown
+    html += '<div class="breakdown">';
+    html += '<h3>Cost Breakdown</h3>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Core Data</span>';
+    html += '<span class="breakdown-value" id="cons-data-cost">$0</span>';
     html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">After Free Credit:</span>';
-    html += '<span class="result-value success" id="cons-final-cost">$0</span>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Messaging</span>';
+    html += '<span class="breakdown-value" id="cons-messaging-cost">$0</span>';
     html += '</div>';
-    html += '<div class="result-item">';
-    html += '<span class="result-label">Annual Cost (ARR):</span>';
-    html += '<span class="result-value success" id="cons-annual-cost">$0</span>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Add-ons</span>';
+    html += '<span class="breakdown-value" id="cons-addons-cost">$0</span>';
+    html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Total Usage Cost</span>';
+    html += '<span class="breakdown-value" id="cons-total-cost">$0</span>';
+    html += '</div>';
+    html += '</div>';
+
+    // Free Credit
+    html += '<div class="breakdown">';
+    html += '<h3>Free Tier Credit</h3>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Monthly Credit</span>';
+    html += '<span class="breakdown-value" style="color: #10b981;">-$50.00</span>';
+    html += '</div>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Final Cost</span>';
+    html += '<span class="breakdown-value" id="cons-final-cost-breakdown">$0</span>';
+    html += '</div>';
+    html += '</div>';
+
+    // Annual
+    html += '<div class="breakdown">';
+    html += '<h3>Annual Projection</h3>';
+    html += '<div class="breakdown-item">';
+    html += '<span class="breakdown-label">Annual Cost (ARR)</span>';
+    html += '<span class="breakdown-value" id="cons-annual-cost">$0</span>';
     html += '</div>';
     html += '</div>';
 
     html += '</div>'; // section
+    html += '</div>'; // results-sticky
+
+    html += '</div>'; // revenue-grid
 
     container.innerHTML = html;
+
+    // Initial calculation
+    setTimeout(() => calculateConsumptionRevenue(), 100);
 }
 
 // Render Revenue Modeling Tool - Credits Model
@@ -818,8 +1002,8 @@ function renderRevenueModelingCredits() {
     container.innerHTML = html;
 }
 
-// Calculate Revenue Model
-function calculateRevenue() {
+// Calculate Revenue Model - Tiered (Live Updates)
+function calculateRevenueTiered() {
     const tiers = pricingData.tiers || [];
     const margins = pricingData.marginAnalysis?.tiers || [];
     const addons = pricingData.addOnsComposableFeatures || [];
@@ -829,14 +1013,17 @@ function calculateRevenue() {
     let addonRevenue = 0;
     let totalCost = 0;
 
+    const customerCounts = {};
+
     // Calculate base revenue from tiers
     tiers.forEach(tier => {
         if (tier.id === 'free') return;
 
-        const input = document.getElementById(`customers-${tier.id}`);
+        const input = document.getElementById(`tiered-${tier.id}-customers`);
         if (!input) return;
 
         const customers = parseInt(input.value) || 0;
+        customerCounts[tier.id] = customers;
         totalCustomers += customers;
         baseRevenue += customers * tier.basePrice;
 
@@ -845,103 +1032,107 @@ function calculateRevenue() {
         if (marginData) {
             totalCost += customers * marginData.baseCost;
         }
-    });
 
-    // Calculate add-on revenue
-    addons.forEach(addon => {
-        if (addon.id === 'reporting') return;
+        // Calculate add-on revenue for this tier
+        addons.forEach(addon => {
+            if (addon.id === 'reporting') return;
 
-        const checkbox = document.getElementById(`addon-${addon.id}`);
-        const adoptionInput = document.getElementById(`adoption-${addon.id}`);
-
-        if (!checkbox || !checkbox.checked || !adoptionInput) return;
-
-        const adoptionRate = (parseInt(adoptionInput.value) || 0) / 100;
-
-        // Calculate add-on revenue per tier
-        tiers.forEach(tier => {
-            if (tier.id === 'free') return;
-
-            const customerInput = document.getElementById(`customers-${tier.id}`);
-            if (!customerInput) return;
-
-            const customers = parseInt(customerInput.value) || 0;
             const tierAvail = addon.tierAvailability[tier.id];
+            if (!tierAvail || !tierAvail.addonPrice) return;
 
-            if (tierAvail && tierAvail.addonPrice) {
+            const checkbox = document.getElementById(`tiered-${tier.id}-${addon.id}`);
+            const adoptionInput = document.getElementById(`tiered-${tier.id}-${addon.id}-adoption`);
+
+            if (checkbox && checkbox.checked && adoptionInput) {
+                const adoptionRate = (parseInt(adoptionInput.value) || 0) / 100;
                 const addonCustomers = Math.floor(customers * adoptionRate);
                 addonRevenue += addonCustomers * tierAvail.addonPrice;
 
-                // Estimate add-on costs (rough estimate: 30% of add-on price)
+                // Estimate add-on costs (30% of add-on price)
                 totalCost += addonCustomers * tierAvail.addonPrice * 0.3;
             }
         });
     });
 
     const totalRevenue = baseRevenue + addonRevenue;
-    const annualRevenue = totalRevenue * 12;
     const grossMargin = totalRevenue > 0 ? ((totalRevenue - totalCost) / totalRevenue * 100) : 0;
+    const grossProfit = totalRevenue - totalCost;
 
     // Update results
-    document.getElementById('total-customers').textContent = totalCustomers.toLocaleString();
-    document.getElementById('base-revenue').textContent = '$' + baseRevenue.toLocaleString();
-    document.getElementById('addon-revenue').textContent = '$' + addonRevenue.toLocaleString();
-    document.getElementById('total-revenue').textContent = '$' + totalRevenue.toLocaleString();
-    document.getElementById('annual-revenue').textContent = '$' + annualRevenue.toLocaleString();
-    document.getElementById('total-cost').textContent = '$' + totalCost.toLocaleString();
-    document.getElementById('gross-margin').textContent = grossMargin.toFixed(1) + '%';
+    const updateElement = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    };
 
-    // Color-code margin
-    const marginElement = document.getElementById('gross-margin');
-    marginElement.classList.remove('success', 'warning');
-    if (grossMargin >= 60) {
-        marginElement.classList.add('success');
-    } else if (grossMargin >= 40) {
-        marginElement.classList.add('warning');
+    updateElement('tiered-total-revenue', '$' + totalRevenue.toLocaleString());
+    updateElement('tiered-base-revenue', '$' + baseRevenue.toLocaleString());
+    updateElement('tiered-addon-revenue', '$' + addonRevenue.toLocaleString());
+    updateElement('tiered-total-revenue-breakdown', '$' + totalRevenue.toLocaleString());
+    updateElement('tiered-total-cost', '$' + totalCost.toLocaleString());
+    updateElement('tiered-gross-profit', '$' + grossProfit.toLocaleString());
+    updateElement('tiered-margin-percent', grossMargin.toFixed(1) + '%');
+
+    // Update margin bar
+    const marginFill = document.getElementById('tiered-margin-fill');
+    if (marginFill) {
+        marginFill.style.width = Math.min(grossMargin, 100) + '%';
+        marginFill.textContent = grossMargin.toFixed(1) + '%';
     }
 
-    // Show results
-    document.getElementById('revenue-results').style.display = 'block';
-
-    // Scroll to results
-    document.getElementById('revenue-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Update customer counts
+    updateElement('tiered-starter-count', customerCounts.starter || 0);
+    updateElement('tiered-growth-count', customerCounts.growth || 0);
+    updateElement('tiered-scale-count', customerCounts.scale || 0);
+    updateElement('tiered-enterprise-count', customerCounts.enterprise || 0);
+    updateElement('tiered-total-customers', totalCustomers.toLocaleString());
 }
 
-// Calculate Consumption Model Revenue
+// Calculate Consumption Model Revenue (Live Updates)
 function calculateConsumptionRevenue() {
     const model = pricingData.pureConsumptionModel;
+    if (!model) return;
 
     // Get inputs
-    const profiles = parseFloat(document.getElementById('cons-profiles').value) || 0; // in thousands
-    const events = parseFloat(document.getElementById('cons-events').value) || 0; // in 100Ks
-    const customObjects = parseFloat(document.getElementById('cons-custom-objects').value) || 0; // in 10Ks
-    const emails = parseFloat(document.getElementById('cons-emails').value) || 0; // in thousands
-    const sms = parseFloat(document.getElementById('cons-sms').value) || 0; // in thousands
-    const segments = parseFloat(document.getElementById('cons-segments').value) || 0;
-    const campaigns = parseFloat(document.getElementById('cons-campaigns').value) || 0;
+    const profiles = parseFloat(document.getElementById('cons-profiles')?.value) || 0;
+    const events = parseFloat(document.getElementById('cons-events')?.value) || 0;
+    const customObjects = parseFloat(document.getElementById('cons-custom-objects')?.value) || 0;
+    const emails = parseFloat(document.getElementById('cons-emails')?.value) || 0;
+    const sms = parseFloat(document.getElementById('cons-sms')?.value) || 0;
+    const segments = parseFloat(document.getElementById('cons-segments')?.value) || 0;
+    const campaigns = parseFloat(document.getElementById('cons-campaigns')?.value) || 0;
 
-    // Calculate costs
-    let totalCost = 0;
-    totalCost += profiles * model.unitPricing.coreDataInfrastructure.profiles.price;
-    totalCost += events * model.unitPricing.coreDataInfrastructure.events.price;
-    totalCost += customObjects * model.unitPricing.coreDataInfrastructure.customObjects.price;
-    totalCost += emails * model.unitPricing.coreMessagingInfrastructure.emailSend.price;
-    totalCost += sms * model.unitPricing.coreMessagingInfrastructure.smsSend.price;
-    totalCost += segments * model.unitPricing.addOnsComposableFeatures.segments.price;
-    totalCost += campaigns * model.unitPricing.addOnsComposableFeatures.campaigns.price;
+    // Calculate costs by category
+    let dataCost = 0;
+    dataCost += profiles * model.unitPricing.coreDataInfrastructure.profiles.price;
+    dataCost += events * model.unitPricing.coreDataInfrastructure.events.price;
+    dataCost += customObjects * model.unitPricing.coreDataInfrastructure.customObjects.price;
 
+    let messagingCost = 0;
+    messagingCost += emails * model.unitPricing.coreMessagingInfrastructure.emailSend.price;
+    messagingCost += sms * model.unitPricing.coreMessagingInfrastructure.smsSend.price;
+
+    let addonsCost = 0;
+    addonsCost += segments * model.unitPricing.addOnsComposableFeatures.segments.price;
+    addonsCost += campaigns * model.unitPricing.addOnsComposableFeatures.campaigns.price;
+
+    const totalCost = dataCost + messagingCost + addonsCost;
     const freeCredit = model.freeTier.usageCredit;
     const finalCost = Math.max(0, totalCost - freeCredit);
     const annualCost = finalCost * 12;
 
     // Update display
-    document.getElementById('cons-total-cost').textContent = '$' + totalCost.toFixed(2);
-    document.getElementById('cons-final-cost').textContent = '$' + finalCost.toFixed(2);
-    document.getElementById('cons-annual-cost').textContent = '$' + annualCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const updateElement = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    };
 
-    // Show results
-    document.getElementById('consumption-results').style.display = 'block';
-    document.getElementById('consumption-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    updateElement('cons-data-cost', '$' + dataCost.toFixed(2));
+    updateElement('cons-messaging-cost', '$' + messagingCost.toFixed(2));
+    updateElement('cons-addons-cost', '$' + addonsCost.toFixed(2));
+    updateElement('cons-total-cost', '$' + totalCost.toFixed(2));
+    updateElement('cons-final-cost', '$' + finalCost.toFixed(2));
+    updateElement('cons-final-cost-breakdown', '$' + finalCost.toFixed(2));
+    updateElement('cons-annual-cost', '$' + annualCost.toLocaleString());
 }
 
 // Calculate Credits Model Revenue
