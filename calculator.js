@@ -61,8 +61,22 @@ function renderTieredModel() {
         ...(pricingData.intelligenceAIML || [])
     ];
 
-    // Build table HTML
-    let html = '<div class="pricing-table-wrapper"><table class="pricing-table">';
+    // Build table HTML with disclaimer banner
+    let html = '';
+
+    // Disclaimer Banner
+    html += '<div class="disclaimer-banner">';
+    html += '<div class="disclaimer-banner-icon">⚠️</div>';
+    html += '<div class="disclaimer-banner-content">';
+    html += '<div class="disclaimer-banner-title">Pricing Estimates - Subject to Change</div>';
+    html += '<div class="disclaimer-banner-text">';
+    html += 'Some pricing and limits below are concrete while others are best-effort estimates. ';
+    html += 'Final tier pricing, limits, and feature availability need to be confirmed.';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="pricing-table-wrapper"><table class="pricing-table">';
 
     // Header rows
     html += '<thead>';
@@ -459,9 +473,25 @@ function renderMarginAnalysis() {
 
     let html = '';
 
+    // Disclaimer Banner
+    html += '<div class="disclaimer-banner">';
+    html += '<div class="disclaimer-banner-icon">⚠️</div>';
+    html += '<div class="disclaimer-banner-content">';
+    html += '<div class="disclaimer-banner-title">Margin Estimates - Subject to Change</div>';
+    html += '<div class="disclaimer-banner-text">';
+    html += 'Some costs and margins below are concrete while others are best-effort estimates. ';
+    html += 'Final cost structures and margin calculations need to be confirmed.';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+
     // Base Margin Table
     html += '<div class="section">';
     html += '<h2>Tier Margin Analysis</h2>';
+    html += '<p style="color: #64748b; margin-bottom: 1rem; font-size: 0.9em;">';
+    html += '<strong>Note:</strong> "Typical Add-ons" represents common add-on combinations adopted by customers at each tier. ';
+    html += 'For example, Starter tier typically uses Segments, Catalogs, and Forms, while Growth tier uses Segments, Catalogs, and Campaigns.';
+    html += '</p>';
     html += '<table class="comparison-table">';
     html += '<thead><tr>';
     html += '<th>Tier</th>';
