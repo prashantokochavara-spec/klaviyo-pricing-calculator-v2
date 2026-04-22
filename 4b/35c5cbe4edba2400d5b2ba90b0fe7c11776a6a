@@ -1,0 +1,25 @@
+index.html
+  daef4beae93607fc 86-242,698,742-751,757-780
+calculator.js
+  daef4beae93607fc 14-17,140-191,424-547,629-820,910-1004,1020-1034,1043-1046
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "4b35c5cbe4edba2400d5b2ba90b0fe7c11776a6a",
+  "prompts": {
+    "daef4beae93607fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ae853a11-f9a5-42c3-a66d-cb601f78aed2",
+        "model": "claude-sonnet-4-5-20250929"
+      },
+      "human_author": "Prashanto Kochavara",
+      "messages": [],
+      "total_additions": 678,
+      "total_deletions": 7,
+      "accepted_lines": 678,
+      "overriden_lines": 0
+    }
+  }
+}
