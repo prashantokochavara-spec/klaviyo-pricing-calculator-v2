@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klaviyo Consumption Pricing - Layout Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .legend {
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-available {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .badge-future {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #f59e0b;
+        }
+
+        .badge-addon {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+
+        .pricing-grid {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1400px;
+        }
+
+        thead {
+            background: #1e293b;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-right: 1px solid #334155;
+        }
+
+        th:first-child {
+            position: sticky;
+            left: 0;
+            background: #1e293b;
+            z-index: 11;
+            min-width: 120px;
+        }
+
+        .layer-header {
+            background: #0f172a;
+            text-align: center;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.5rem 1rem;
+        }
+
+        .api-header {
+            font-size: 0.875rem;
+            padding: 0.75rem 0.5rem;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #f8fafc;
+        }
+
+        tbody tr:hover {
+            background: #f1f5f9;
+        }
+
+        td {
+            padding: 1rem;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            position: sticky;
+            left: 0;
+            background: white;
+            font-weight: 600;
+            z-index: 5;
+            min-width: 120px;
+        }
+
+        tbody tr:nth-child(odd) td:first-child {
+            background: #f8fafc;
+        }
+
+        tbody tr:hover td:first-child {
+            background: #f1f5f9;
+        }
+
+        .tier-name {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .tier-price {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .included {
+            color: #065f46;
+            font-weight: 500;
+        }
+
+        .not-available {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .addon-cell {
+            color: #1e40af;
+            font-weight: 500;
+        }
+
+        .future-cell {
+            color: #92400e;
+            font-style: italic;
+        }
+
+        .limit {
+            display: block;
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .notes {
+            background: #fef9e7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 2rem;
+            border-radius: 4px;
+        }
+
+        .notes h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+
+        .notes ul {
+            margin-left: 1.5rem;
+        }
+
+        .notes li {
+            margin-bottom: 0.5rem;
+            color: #451a03;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Klaviyo Developer Platform - Consumption Pricing</h1>
+            <p>Composable Infrastructure with Transparent Pricing</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span class="legend-badge badge-available">Available Today</span>
+                <span>Production-ready APIs</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-badge badge-future">Future/Beta</span>
+                <span>Planned or experimental</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-badge badge-addon">Add-on</span>
+                <span>Available as add-on pricing</span>
+            </div>
+        </div>
+
+        <div class="pricing-grid">
+            <table>
+                <thead>
+                    <tr>
+                        <th rowspan="2">Tier</th>
+                        <th colspan="9" class="layer-header">Core Data Infrastructure</th>
+                        <th colspan="3" class="layer-header">Core Messaging Infrastructure</th>
+                        <th colspan="6" class="layer-header">Add-ons (Composable Features)</th>
+                        <th colspan="6" class="layer-header">Intelligence (AI/ML)</th>
+                    </tr>
+                    <tr>
+                        <!-- Data Infrastructure -->
+                        <th class="api-header">Profiles<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Events<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Custom Objects<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Lists<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Tags<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Webhooks<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Web Feeds<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Client SDK<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Tracking Config<br><span class="status-badge badge-available">Available</span></th>
+
+                        <!-- Messaging Infrastructure -->
+                        <th class="api-header">Templates<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Email Send<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">SMS Send<br><span class="status-badge badge-available">Available</span></th>
+
+                        <!-- Add-ons -->
+                        <th class="api-header">Segments<br><span class="status-badge badge-addon">Add-on</span></th>
+                        <th class="api-header">Metrics<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Catalogs<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Campaigns<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Flows<br><span class="status-badge badge-available">Available</span></th>
+                        <th class="api-header">Forms<br><span class="status-badge badge-available">Available</span></th>
+
+                        <!-- Intelligence -->
+                        <th class="api-header">CLV Prediction<br><span class="status-badge badge-future">Future</span></th>
+                        <th class="api-header">Churn Predict<br><span class="status-badge badge-future">Future</span></th>
+                        <th class="api-header">Send Time AI<br><span class="status-badge badge-future">Future</span></th>
+                        <th class="api-header">Recommendations<br><span class="status-badge badge-future">Future</span></th>
+                        <th class="api-header">Predictive Segments<br><span class="status-badge badge-future">Future</span></th>
+                        <th class="api-header">Insights AI<br><span class="status-badge badge-future">Future</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Free Tier -->
+                    <tr>
+                        <td>
+                            <div class="tier-name">Free</div>
+                            <div class="tier-price">$0/month</div>
+                        </td>
+                        <!-- Data Infra -->
+                        <td class="included">✓<span class="limit">500 profiles</span></td>
+                        <td class="included">✓<span class="limit">50K events/mo</span></td>
+                        <td class="not-available">—</td>
+                        <td class="included">✓<span class="limit">10 lists</span></td>
+                        <td class="included">✓<span class="limit">20 tags</span></td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <td class="included">✓<span class="limit">Basic</span></td>
+                        <td class="included">✓<span class="limit">Basic</span></td>
+                        <!-- Messaging -->
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <!-- Add-ons -->
+                        <td class="addon-cell">Add-on</td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <!-- Intelligence -->
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                    </tr>
+
+                    <!-- Starter Tier -->
+                    <tr>
+                        <td>
+                            <div class="tier-name">Starter</div>
+                            <div class="tier-price">$49/month</div>
+                        </td>
+                        <!-- Data Infra -->
+                        <td class="included">✓<span class="limit">2K profiles</span></td>
+                        <td class="included">✓<span class="limit">200K events/mo</span></td>
+                        <td class="included">✓<span class="limit">10K records</span></td>
+                        <td class="included">✓<span class="limit">50 lists</span></td>
+                        <td class="included">✓<span class="limit">100 tags</span></td>
+                        <td class="included">✓<span class="limit">10 webhooks</span></td>
+                        <td class="included">✓<span class="limit">5 feeds</span></td>
+                        <td class="included">✓<span class="limit">Full access</span></td>
+                        <td class="included">✓<span class="limit">Full access</span></td>
+                        <!-- Messaging -->
+                        <td class="included">✓<span class="limit">10 templates</span></td>
+                        <td class="included">✓<span class="limit">2K emails/mo</span></td>
+                        <td class="not-available">—</td>
+                        <!-- Add-ons -->
+                        <td class="addon-cell">Add-on<span class="limit">$30/mo for 50</span></td>
+                        <td class="included">✓<span class="limit">Basic metrics</span></td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <td class="not-available">—</td>
+                        <!-- Intelligence -->
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                    </tr>
+
+                    <!-- Growth Tier -->
+                    <tr>
+                        <td>
+                            <div class="tier-name">Growth</div>
+                            <div class="tier-price">$249/month</div>
+                        </td>
+                        <!-- Data Infra -->
+                        <td class="included">✓<span class="limit">10K profiles</span></td>
+                        <td class="included">✓<span class="limit">2M events/mo</span></td>
+                        <td class="included">✓<span class="limit">100K records</span></td>
+                        <td class="included">✓<span class="limit">200 lists</span></td>
+                        <td class="included">✓<span class="limit">500 tags</span></td>
+                        <td class="included">✓<span class="limit">50 webhooks</span></td>
+                        <td class="included">✓<span class="limit">20 feeds</span></td>
+                        <td class="included">✓<span class="limit">Full access</span></td>
+                        <td class="included">✓<span class="limit">Full access</span></td>
+                        <!-- Messaging -->
+                        <td class="included">✓<span class="limit">50 templates</span></td>
+                        <td class="included">✓<span class="limit">20K emails/mo</span></td>
+                        <td class="included">✓<span class="limit">1K SMS/mo</span></td>
+                        <!-- Add-ons -->
+                        <td class="addon-cell">Add-on<span class="limit">$50/mo for 100</span></td>
+                        <td class="included">✓<span class="limit">Advanced</span></td>
+                        <td class="included">✓<span class="limit">10K items</span></td>
+                        <td class="included">✓<span class="limit">50 campaigns</span></td>
+                        <td class="not-available">—</td>
+                        <td class="included">✓<span class="limit">10 forms</span></td>
+                        <!-- Intelligence -->
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                    </tr>
+
+                    <!-- Scale Tier -->
+                    <tr>
+                        <td>
+                            <div class="tier-name">Scale</div>
+                            <div class="tier-price">$899/month</div>
+                        </td>
+                        <!-- Data Infra -->
+                        <td class="included">✓<span class="limit">50K profiles</span></td>
+                        <td class="included">✓<span class="limit">10M events/mo</span></td>
+                        <td class="included">✓<span class="limit">500K records</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">100 webhooks</span></td>
+                        <td class="included">✓<span class="limit">50 feeds</span></td>
+                        <td class="included">✓<span class="limit">Full access</span></td>
+                        <td class="included">✓<span class="limit">Full access</span></td>
+                        <!-- Messaging -->
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">200K emails/mo</span></td>
+                        <td class="included">✓<span class="limit">10K SMS/mo</span></td>
+                        <!-- Add-ons -->
+                        <td class="included">✓<span class="limit">500 segments</span></td>
+                        <td class="included">✓<span class="limit">Real-time</span></td>
+                        <td class="included">✓<span class="limit">50K items</span></td>
+                        <td class="included">✓<span class="limit">200 campaigns</span></td>
+                        <td class="included">✓<span class="limit">100 flows</span></td>
+                        <td class="included">✓<span class="limit">50 forms</span></td>
+                        <!-- Intelligence -->
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                        <td class="future-cell">Future</td>
+                    </tr>
+
+                    <!-- Enterprise Tier -->
+                    <tr>
+                        <td>
+                            <div class="tier-name">Enterprise</div>
+                            <div class="tier-price">$12,000/month</div>
+                        </td>
+                        <!-- Data Infra -->
+                        <td class="included">✓<span class="limit">250K profiles</span></td>
+                        <td class="included">✓<span class="limit">100M events/mo</span></td>
+                        <td class="included">✓<span class="limit">2M records</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Full access</span></td>
+                        <td class="included">✓<span class="limit">Full access</span></td>
+                        <!-- Messaging -->
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">1M emails/mo</span></td>
+                        <td class="included">✓<span class="limit">50K SMS/mo</span></td>
+                        <!-- Add-ons -->
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Enterprise</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <td class="included">✓<span class="limit">Unlimited</span></td>
+                        <!-- Intelligence -->
+                        <td class="included">✓ Beta<span class="limit">Early access</span></td>
+                        <td class="included">✓ Beta<span class="limit">Early access</span></td>
+                        <td class="included">✓ Beta<span class="limit">Early access</span></td>
+                        <td class="included">✓ Beta<span class="limit">Early access</span></td>
+                        <td class="included">✓ Beta<span class="limit">Early access</span></td>
+                        <td class="included">✓ Beta<span class="limit">Early access</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="notes">
+            <h3>📋 Design Notes</h3>
+            <ul>
+                <li><strong>Two-Axis Layout:</strong> Tiers (rows) × APIs (columns grouped by layer)</li>
+                <li><strong>Clear Status:</strong> Available (green), Future (yellow), Add-on (blue) badges</li>
+                <li><strong>Composability Visible:</strong> Can see exactly which APIs are included at each tier</li>
+                <li><strong>Segments as Add-on:</strong> Available at all tiers for additional fee</li>
+                <li><strong>Custom Objects:</strong> Record-based limits (10K, 100K, 500K, 2M records)</li>
+                <li><strong>Intelligence Layer:</strong> Future/Beta - Enterprise gets early access</li>
+                <li><strong>Sticky Headers:</strong> First column (tier names) and top row (API names) stay visible on scroll</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

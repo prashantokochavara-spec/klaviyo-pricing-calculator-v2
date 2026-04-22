@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue Modeling Tool - Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tier-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tier-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .tier-price {
+            font-size: 1rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .input-group input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .addon-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .addon-section h4 {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .addon-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+
+        .addon-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .addon-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .addon-price {
+            font-size: 0.875rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .addon-adoption {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: 1.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .addon-adoption input {
+            width: 80px;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .addon-adoption span {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .results-panel {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Monaco', monospace;
+        }
+
+        .breakdown {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .breakdown h3 {
+            font-size: 1rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            padding-top: 1rem;
+            border-top: 2px solid #cbd5e1;
+        }
+
+        .breakdown-label {
+            color: #475569;
+        }
+
+        .breakdown-value {
+            font-family: 'Monaco', monospace;
+            font-weight: 600;
+        }
+
+        .margin-indicator {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .margin-bar {
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 0.5rem;
+        }
+
+        .margin-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .target-input {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .target-input h3 {
+            font-size: 1rem;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+        }
+
+        .target-input input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1.25rem;
+            font-family: 'Monaco', monospace;
+            font-weight: 600;
+        }
+
+        .gap-indicator {
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        .gap-positive {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .gap-negative {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .quick-btn {
+            padding: 0.5rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            border-color: #667eea;
+            background: #f1f5f9;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: #667eea;
+            font-size: 0.875rem;
+            margin-left: 0.25rem;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Revenue Modeling Tool</h1>
+            <p>Model customer distribution and add-on adoption to hit revenue targets</p>
+        </div>
+
+        <div class="grid">
+            <!-- Left Panel: Customer Inputs -->
+            <div>
+                <div class="section">
+                    <h2>Customer Distribution by Tier</h2>
+
+                    <!-- Starter Tier -->
+                    <div class="tier-card">
+                        <div class="tier-header">
+                            <span class="tier-name">Starter Tier</span>
+                            <span class="tier-price">$49/month</span>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Number of Customers</label>
+                            <input type="number" id="starter-customers" value="100" min="0" oninput="calculate()">
+                        </div>
+
+                        <div class="addon-section">
+                            <h4>Available Add-ons</h4>
+                            <div class="addon-item">
+                                <div class="addon-label">
+                                    <input type="checkbox" id="starter-segments" onchange="calculate()">
+                                    <label for="starter-segments">Segments (50)</label>
+                                </div>
+                                <span class="addon-price">+$30/mo</span>
+                            </div>
+                            <div class="addon-adoption">
+                                <input type="number" id="starter-segments-adoption" value="20" min="0" max="100" oninput="calculate()">
+                                <span>% adoption</span>
+                            </div>
+
+                            <div class="addon-item">
+                                <div class="addon-label">
+                                    <input type="checkbox" id="starter-catalogs" onchange="calculate()">
+                                    <label for="starter-catalogs">Catalogs (1K items)</label>
+                                </div>
+                                <span class="addon-price">+$25/mo</span>
+                            </div>
+                            <div class="addon-adoption">
+                                <input type="number" id="starter-catalogs-adoption" value="10" min="0" max="100" oninput="calculate()">
+                                <span>% adoption</span>
+                            </div>
+
+                            <div class="addon-item">
+                                <div class="addon-label">
+                                    <input type="checkbox" id="starter-campaigns" onchange="calculate()">
+                                    <label for="starter-campaigns">Campaigns (10)</label>
+                                </div>
+                                <span class="addon-price">+$40/mo</span>
+                            </div>
+                            <div class="addon-adoption">
+                                <input type="number" id="starter-campaigns-adoption" value="15" min="0" max="100" oninput="calculate()">
+                                <span>% adoption</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Growth Tier -->
+                    <div class="tier-card">
+                        <div class="tier-header">
+                            <span class="tier-name">Growth Tier</span>
+                            <span class="tier-price">$249/month</span>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Number of Customers</label>
+                            <input type="number" id="growth-customers" value="50" min="0" oninput="calculate()">
+                        </div>
+
+                        <div class="addon-section">
+                            <h4>Available Add-ons</h4>
+                            <div class="addon-item">
+                                <div class="addon-label">
+                                    <input type="checkbox" id="growth-segments" checked onchange="calculate()">
+                                    <label for="growth-segments">Segments (100)</label>
+                                </div>
+                                <span class="addon-price">+$50/mo</span>
+                            </div>
+                            <div class="addon-adoption">
+                                <input type="number" id="growth-segments-adoption" value="40" min="0" max="100" oninput="calculate()">
+                                <span>% adoption</span>
+                            </div>
+
+                            <div class="addon-item">
+                                <div class="addon-label">
+                                    <input type="checkbox" id="growth-flows" onchange="calculate()">
+                                    <label for="growth-flows">Flows (20)</label>
+                                </div>
+                                <span class="addon-price">+$150/mo</span>
+                            </div>
+                            <div class="addon-adoption">
+                                <input type="number" id="growth-flows-adoption" value="25" min="0" max="100" oninput="calculate()">
+                                <span>% adoption</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scale Tier -->
+                    <div class="tier-card">
+                        <div class="tier-header">
+                            <span class="tier-name">Scale Tier</span>
+                            <span class="tier-price">$899/month</span>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Number of Customers</label>
+                            <input type="number" id="scale-customers" value="20" min="0" oninput="calculate()">
+                        </div>
+
+                        <div class="addon-section">
+                            <h4>Available Add-ons (typically included)</h4>
+                            <p style="font-size: 0.875rem; color: #64748b; margin-top: 0.5rem;">
+                                Most add-ons included at this tier. Optional premium features:
+                            </p>
+                            <div class="addon-item">
+                                <div class="addon-label">
+                                    <input type="checkbox" id="scale-premium" onchange="calculate()">
+                                    <label for="scale-premium">Premium Support</label>
+                                </div>
+                                <span class="addon-price">+$500/mo</span>
+                            </div>
+                            <div class="addon-adoption">
+                                <input type="number" id="scale-premium-adoption" value="50" min="0" max="100" oninput="calculate()">
+                                <span>% adoption</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise Tier -->
+                    <div class="tier-card">
+                        <div class="tier-header">
+                            <span class="tier-name">Enterprise Tier</span>
+                            <span class="tier-price">$12,000/month</span>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Number of Customers</label>
+                            <input type="number" id="enterprise-customers" value="5" min="0" oninput="calculate()">
+                        </div>
+
+                        <div class="addon-section">
+                            <h4>Intelligence Add-ons (Beta)</h4>
+                            <div class="addon-item">
+                                <div class="addon-label">
+                                    <input type="checkbox" id="enterprise-intelligence" checked onchange="calculate()">
+                                    <label for="enterprise-intelligence">Intelligence Suite</label>
+                                    <span class="tooltip" data-tooltip="CLV + Churn + Recommendations">ℹ️</span>
+                                </div>
+                                <span class="addon-price">~$2,000/mo avg</span>
+                            </div>
+                            <div class="addon-adoption">
+                                <input type="number" id="enterprise-intelligence-adoption" value="60" min="0" max="100" oninput="calculate()">
+                                <span>% adoption</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Results -->
+            <div class="results-panel">
+                <div class="section">
+                    <h2>Revenue Summary</h2>
+
+                    <!-- Target Setting -->
+                    <div class="target-input">
+                        <h3>Monthly Revenue Target</h3>
+                        <input type="number" id="revenue-target" value="100000" oninput="calculate()" placeholder="Enter target...">
+                        <div id="gap-indicator" class="gap-indicator"></div>
+                    </div>
+
+                    <!-- Total Revenue -->
+                    <div class="metric-card">
+                        <div class="metric-label">Total Monthly Revenue</div>
+                        <div class="metric-value" id="total-revenue">$0</div>
+                    </div>
+
+                    <!-- Margin Indicator -->
+                    <div class="margin-indicator">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; color: #1e293b;">Blended Gross Margin</span>
+                            <span id="margin-percent" style="font-weight: 700; color: #10b981;">0%</span>
+                        </div>
+                        <div class="margin-bar">
+                            <div id="margin-fill" class="margin-fill" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Breakdown -->
+                    <div class="breakdown">
+                        <h3>Revenue Breakdown</h3>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Base Tier Revenue</span>
+                            <span class="breakdown-value" id="base-revenue">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Add-on Revenue</span>
+                            <span class="breakdown-value" id="addon-revenue">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Total Revenue</span>
+                            <span class="breakdown-value" id="total-revenue-breakdown">$0</span>
+                        </div>
+                    </div>
+
+                    <!-- Cost Breakdown -->
+                    <div class="breakdown">
+                        <h3>Cost & Margin</h3>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Total Infrastructure Cost</span>
+                            <span class="breakdown-value" id="total-cost">$0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Gross Profit</span>
+                            <span class="breakdown-value" id="gross-profit" style="color: #10b981;">$0</span>
+                        </div>
+                    </div>
+
+                    <!-- Customer Breakdown -->
+                    <div class="breakdown">
+                        <h3>Customer Distribution</h3>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Starter</span>
+                            <span class="breakdown-value" id="starter-count">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Growth</span>
+                            <span class="breakdown-value" id="growth-count">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Scale</span>
+                            <span class="breakdown-value" id="scale-count">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Enterprise</span>
+                            <span class="breakdown-value" id="enterprise-count">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Total Customers</span>
+                            <span class="breakdown-value" id="total-customers">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <button class="quick-btn" onclick="suggestMix()">💡 Suggest Mix</button>
+                        <button class="quick-btn" onclick="resetAll()">🔄 Reset All</button>
+                        <button class="quick-btn" onclick="exportData()">📥 Export</button>
+                        <button class="quick-btn" onclick="loadScenario()">📊 Load Scenario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Unit costs (from previous analysis)
+        const COSTS = {
+            starter: 7.68,
+            growth: 81.90,
+            scale: 449.50,
+            enterprise: 3990.00
+        };
+
+        const TIER_PRICES = {
+            starter: 49,
+            growth: 249,
+            scale: 899,
+            enterprise: 12000
+        };
+
+        function calculate() {
+            // Get customer counts
+            const customers = {
+                starter: parseInt(document.getElementById('starter-customers').value) || 0,
+                growth: parseInt(document.getElementById('growth-customers').value) || 0,
+                scale: parseInt(document.getElementById('scale-customers').value) || 0,
+                enterprise: parseInt(document.getElementById('enterprise-customers').value) || 0
+            };
+
+            // Calculate base revenue
+            let baseRevenue = 0;
+            baseRevenue += customers.starter * TIER_PRICES.starter;
+            baseRevenue += customers.growth * TIER_PRICES.growth;
+            baseRevenue += customers.scale * TIER_PRICES.scale;
+            baseRevenue += customers.enterprise * TIER_PRICES.enterprise;
+
+            // Calculate add-on revenue
+            let addonRevenue = 0;
+
+            // Starter add-ons
+            if (document.getElementById('starter-segments').checked) {
+                const adoption = parseInt(document.getElementById('starter-segments-adoption').value) / 100;
+                addonRevenue += customers.starter * 30 * adoption;
+            }
+            if (document.getElementById('starter-catalogs').checked) {
+                const adoption = parseInt(document.getElementById('starter-catalogs-adoption').value) / 100;
+                addonRevenue += customers.starter * 25 * adoption;
+            }
+            if (document.getElementById('starter-campaigns').checked) {
+                const adoption = parseInt(document.getElementById('starter-campaigns-adoption').value) / 100;
+                addonRevenue += customers.starter * 40 * adoption;
+            }
+
+            // Growth add-ons
+            if (document.getElementById('growth-segments').checked) {
+                const adoption = parseInt(document.getElementById('growth-segments-adoption').value) / 100;
+                addonRevenue += customers.growth * 50 * adoption;
+            }
+            if (document.getElementById('growth-flows').checked) {
+                const adoption = parseInt(document.getElementById('growth-flows-adoption').value) / 100;
+                addonRevenue += customers.growth * 150 * adoption;
+            }
+
+            // Scale add-ons
+            if (document.getElementById('scale-premium').checked) {
+                const adoption = parseInt(document.getElementById('scale-premium-adoption').value) / 100;
+                addonRevenue += customers.scale * 500 * adoption;
+            }
+
+            // Enterprise add-ons
+            if (document.getElementById('enterprise-intelligence').checked) {
+                const adoption = parseInt(document.getElementById('enterprise-intelligence-adoption').value) / 100;
+                addonRevenue += customers.enterprise * 2000 * adoption;
+            }
+
+            const totalRevenue = baseRevenue + addonRevenue;
+
+            // Calculate costs (simplified - just base tier costs)
+            const totalCost =
+                customers.starter * COSTS.starter +
+                customers.growth * COSTS.growth +
+                customers.scale * COSTS.scale +
+                customers.enterprise * COSTS.enterprise;
+
+            const grossProfit = totalRevenue - totalCost;
+            const margin = totalRevenue > 0 ? (grossProfit / totalRevenue) * 100 : 0;
+
+            // Update UI
+            document.getElementById('total-revenue').textContent = '$' + totalRevenue.toLocaleString();
+            document.getElementById('base-revenue').textContent = '$' + baseRevenue.toLocaleString();
+            document.getElementById('addon-revenue').textContent = '$' + addonRevenue.toLocaleString();
+            document.getElementById('total-revenue-breakdown').textContent = '$' + totalRevenue.toLocaleString();
+            document.getElementById('total-cost').textContent = '$' + totalCost.toLocaleString();
+            document.getElementById('gross-profit').textContent = '$' + grossProfit.toLocaleString();
+            document.getElementById('margin-percent').textContent = margin.toFixed(1) + '%';
+            document.getElementById('margin-fill').style.width = Math.min(margin, 100) + '%';
+            document.getElementById('margin-fill').textContent = margin.toFixed(1) + '%';
+
+            // Customer counts
+            const totalCustomers = customers.starter + customers.growth + customers.scale + customers.enterprise;
+            document.getElementById('starter-count').textContent = customers.starter;
+            document.getElementById('growth-count').textContent = customers.growth;
+            document.getElementById('scale-count').textContent = customers.scale;
+            document.getElementById('enterprise-count').textContent = customers.enterprise;
+            document.getElementById('total-customers').textContent = totalCustomers;
+
+            // Gap to target
+            const target = parseInt(document.getElementById('revenue-target').value) || 0;
+            const gap = totalRevenue - target;
+            const gapIndicator = document.getElementById('gap-indicator');
+
+            if (gap >= 0) {
+                gapIndicator.className = 'gap-indicator gap-positive';
+                gapIndicator.textContent = `✓ Target exceeded by $${gap.toLocaleString()}`;
+            } else {
+                gapIndicator.className = 'gap-indicator gap-negative';
+                gapIndicator.textContent = `⚠️ $${Math.abs(gap).toLocaleString()} short of target`;
+            }
+        }
+
+        function suggestMix() {
+            const target = parseInt(document.getElementById('revenue-target').value) || 100000;
+
+            // Suggested mix: 50% Starter, 30% Growth, 15% Scale, 5% Enterprise
+            const suggested = {
+                starter: Math.round((target * 0.20) / TIER_PRICES.starter),
+                growth: Math.round((target * 0.30) / TIER_PRICES.growth),
+                scale: Math.round((target * 0.35) / TIER_PRICES.scale),
+                enterprise: Math.round((target * 0.15) / TIER_PRICES.enterprise)
+            };
+
+            document.getElementById('starter-customers').value = suggested.starter;
+            document.getElementById('growth-customers').value = suggested.growth;
+            document.getElementById('scale-customers').value = suggested.scale;
+            document.getElementById('enterprise-customers').value = suggested.enterprise;
+
+            calculate();
+        }
+
+        function resetAll() {
+            document.getElementById('starter-customers').value = 100;
+            document.getElementById('growth-customers').value = 50;
+            document.getElementById('scale-customers').value = 20;
+            document.getElementById('enterprise-customers').value = 5;
+
+            document.querySelectorAll('input[type="number"]:not([id$="-customers"])').forEach(input => {
+                if (input.id.includes('adoption')) {
+                    input.value = input.id.includes('enterprise') ? 60 : 20;
+                }
+            });
+
+            calculate();
+        }
+
+        function exportData() {
+            const data = {
+                customers: {
+                    starter: parseInt(document.getElementById('starter-customers').value) || 0,
+                    growth: parseInt(document.getElementById('growth-customers').value) || 0,
+                    scale: parseInt(document.getElementById('scale-customers').value) || 0,
+                    enterprise: parseInt(document.getElementById('enterprise-customers').value) || 0
+                },
+                revenue: document.getElementById('total-revenue').textContent,
+                margin: document.getElementById('margin-percent').textContent,
+                target: document.getElementById('revenue-target').value
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'revenue-model-' + new Date().toISOString().split('T')[0] + '.json';
+            a.click();
+        }
+
+        function loadScenario() {
+            if (confirm('Load "High Growth" scenario? (500 customers, aggressive add-on adoption)')) {
+                document.getElementById('starter-customers').value = 250;
+                document.getElementById('growth-customers').value = 150;
+                document.getElementById('scale-customers').value = 80;
+                document.getElementById('enterprise-customers').value = 20;
+                document.getElementById('starter-segments-adoption').value = 40;
+                document.getElementById('growth-segments-adoption').value = 60;
+                document.getElementById('enterprise-intelligence-adoption').value = 80;
+                calculate();
+            }
+        }
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>

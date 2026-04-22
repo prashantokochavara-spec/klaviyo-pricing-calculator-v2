@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Strategy Comparison - Margins & Add-ons</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .option {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .option h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .option.recommended {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .option.recommended h3 {
+            color: #10b981;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .badge-recommended {
+            background: #10b981;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .cost-table th {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .revenue-table th {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .margin-table th {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .number {
+            font-family: 'Monaco', 'Courier New', monospace;
+            text-align: right;
+        }
+
+        .tier-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .margin-good {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .margin-fair {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .margin-poor {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .total-row {
+            font-weight: 700;
+            background: #f8fafc;
+            border-top: 2px solid #1e293b;
+        }
+
+        .notes {
+            background: #fef9e7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .intelligence-pricing {
+            background: #ede9fe;
+            border: 2px solid #7c3aed;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .intelligence-pricing h4 {
+            color: #5b21b6;
+            margin-bottom: 1rem;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #c4b5fd;
+        }
+
+        .price-item:last-child {
+            border-bottom: none;
+        }
+
+        .api-costs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .api-cost-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .api-cost-card h4 {
+            color: #1e293b;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .api-cost-card .cost {
+            font-family: 'Monaco', monospace;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .api-cost-card .note {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Pricing Strategy Analysis</h1>
+            <p>Margin Analysis & Add-on Strategy Comparison</p>
+        </div>
+
+        <!-- Add-on Strategy Comparison -->
+        <div class="section">
+            <h2>🎯 Add-on Strategy Comparison</h2>
+
+            <div class="comparison">
+                <div class="option">
+                    <h3>Option A: Progressive Unlock (Current)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Starter</th>
+                                <th>Growth</th>
+                                <th>Scale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Segments</td>
+                                <td>Add-on $30</td>
+                                <td>Add-on $50</td>
+                                <td>✓ Included</td>
+                            </tr>
+                            <tr>
+                                <td>Metrics</td>
+                                <td>✓ Basic</td>
+                                <td>✓ Advanced</td>
+                                <td>✓ Real-time</td>
+                            </tr>
+                            <tr>
+                                <td>Catalogs</td>
+                                <td>—</td>
+                                <td>✓ 10K items</td>
+                                <td>✓ 50K items</td>
+                            </tr>
+                            <tr>
+                                <td>Campaigns</td>
+                                <td>—</td>
+                                <td>✓ 50 campaigns</td>
+                                <td>✓ 200 campaigns</td>
+                            </tr>
+                            <tr>
+                                <td>Flows</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>✓ 100 flows</td>
+                            </tr>
+                            <tr>
+                                <td>Forms</td>
+                                <td>—</td>
+                                <td>✓ 10 forms</td>
+                                <td>✓ 50 forms</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="notes">
+                        <strong>Pros:</strong> Simple pricing, natural upsell path, predictable revenue<br>
+                        <strong>Cons:</strong> Less flexible, customers may feel constrained
+                    </div>
+                </div>
+
+                <div class="option recommended">
+                    <h3>Option B: True À La Carte <span class="badge badge-recommended">Recommended</span></h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Starter</th>
+                                <th>Growth</th>
+                                <th>Scale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Segments</td>
+                                <td>Add-on $30</td>
+                                <td>Add-on $50</td>
+                                <td>Add-on $100</td>
+                            </tr>
+                            <tr>
+                                <td>Metrics</td>
+                                <td>✓ Basic</td>
+                                <td>✓ Advanced</td>
+                                <td>✓ Real-time</td>
+                            </tr>
+                            <tr>
+                                <td>Catalogs</td>
+                                <td>Add-on $25</td>
+                                <td>Add-on $75</td>
+                                <td>Add-on $150</td>
+                            </tr>
+                            <tr>
+                                <td>Campaigns</td>
+                                <td>Add-on $40</td>
+                                <td>Add-on $100</td>
+                                <td>Add-on $200</td>
+                            </tr>
+                            <tr>
+                                <td>Flows</td>
+                                <td>Add-on $50</td>
+                                <td>Add-on $150</td>
+                                <td>Add-on $300</td>
+                            </tr>
+                            <tr>
+                                <td>Forms</td>
+                                <td>Add-on $15</td>
+                                <td>Add-on $40</td>
+                                <td>Add-on $80</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="notes">
+                        <strong>Pros:</strong> True composability, customers pay for what they use, higher ARPU potential<br>
+                        <strong>Cons:</strong> More complex, requires good bundling UX<br>
+                        <strong>Why Recommended:</strong> Metrics included (analytics is core), everything else is truly add-on
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unit Cost Estimates -->
+        <div class="section">
+            <h2>💰 Unit Cost Estimates (Infrastructure + Industry Benchmarks)</h2>
+
+            <div class="api-costs">
+                <!-- Known Costs -->
+                <div class="api-cost-card" style="border-left-color: #10b981;">
+                    <h4>Profiles API</h4>
+                    <div class="cost">$0.00004/profile/month</div>
+                    <div class="note">✓ Actual data from Data Infra MER</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #10b981;">
+                    <h4>Events API</h4>
+                    <div class="cost">$0.000035/event</div>
+                    <div class="note">✓ Actual data from Data Infra MER</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #10b981;">
+                    <h4>Email Send API</h4>
+                    <div class="cost">$0.000025/email</div>
+                    <div class="note">✓ Fully-loaded COGS</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #10b981;">
+                    <h4>SMS Send API</h4>
+                    <div class="cost">$0.0085/SMS</div>
+                    <div class="note">✓ Carrier costs + infrastructure</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #10b981;">
+                    <h4>Segments API</h4>
+                    <div class="cost">$0.13/segment/month</div>
+                    <div class="note">✓ User-provided cost</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #10b981;">
+                    <h4>Custom Objects API</h4>
+                    <div class="cost">$0.000005/record/month</div>
+                    <div class="note">✓ Based on $0.225/GB storage (avg 45KB/record)</div>
+                </div>
+
+                <!-- Estimated Costs -->
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Lists API</h4>
+                    <div class="cost">$0.0001/list/month</div>
+                    <div class="note">⚡ Estimated - metadata only</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Tags API</h4>
+                    <div class="cost">$0.00001/tag/month</div>
+                    <div class="note">⚡ Estimated - lightweight metadata</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Webhooks API</h4>
+                    <div class="cost">$0.01/webhook/month</div>
+                    <div class="note">⚡ Estimated - storage + delivery infra</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Web Feeds API</h4>
+                    <div class="cost">$0.05/feed/month</div>
+                    <div class="note">⚡ Estimated - polling + storage</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Templates API</h4>
+                    <div class="cost">$0.001/template/month</div>
+                    <div class="note">⚡ Estimated - storage + rendering cache</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Catalogs API</h4>
+                    <div class="cost">$0.0001/item/month</div>
+                    <div class="note">⚡ Estimated - similar to custom objects</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Metrics API</h4>
+                    <div class="cost">$0.01/metric/month</div>
+                    <div class="note">⚡ Estimated - aggregation compute</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Campaigns API</h4>
+                    <div class="cost">$0.05/campaign</div>
+                    <div class="note">⚡ Estimated - orchestration overhead</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Flows API</h4>
+                    <div class="cost">$0.10/flow/month</div>
+                    <div class="note">⚡ Estimated - state machine complexity</div>
+                </div>
+
+                <div class="api-cost-card" style="border-left-color: #f59e0b;">
+                    <h4>Forms API</h4>
+                    <div class="cost">$0.01/form/month</div>
+                    <div class="note">⚡ Estimated - minimal overhead</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Intelligence Premium Pricing -->
+        <div class="section">
+            <h2>🤖 Intelligence Layer - Premium Pricing</h2>
+            <p style="margin-bottom: 1rem; color: #64748b;">ML/AI features command premium pricing (3-10× markup over infrastructure costs)</p>
+
+            <div class="intelligence-pricing">
+                <h4>Usage-Based Intelligence Pricing</h4>
+                <div class="price-item">
+                    <span><strong>CLV Prediction API</strong></span>
+                    <span class="cost">$0.50/prediction</span>
+                </div>
+                <div class="price-item">
+                    <span>└─ Infrastructure cost: ~$0.05 (GPU inference)</span>
+                    <span style="color: #10b981; font-weight: 600;">10× markup</span>
+                </div>
+
+                <div class="price-item" style="margin-top: 1rem;">
+                    <span><strong>Churn Prediction API</strong></span>
+                    <span class="cost">$0.50/prediction</span>
+                </div>
+                <div class="price-item">
+                    <span>└─ Infrastructure cost: ~$0.05 (GPU inference)</span>
+                    <span style="color: #10b981; font-weight: 600;">10× markup</span>
+                </div>
+
+                <div class="price-item" style="margin-top: 1rem;">
+                    <span><strong>Send Time Optimization API</strong></span>
+                    <span class="cost">$0.10/optimization</span>
+                </div>
+                <div class="price-item">
+                    <span>└─ Infrastructure cost: ~$0.02 (lighter ML)</span>
+                    <span style="color: #10b981; font-weight: 600;">5× markup</span>
+                </div>
+
+                <div class="price-item" style="margin-top: 1rem;">
+                    <span><strong>Product Recommendations API</strong></span>
+                    <span class="cost">$0.25/recommendation set</span>
+                </div>
+                <div class="price-item">
+                    <span>└─ Infrastructure cost: ~$0.03 (collaborative filtering)</span>
+                    <span style="color: #10b981; font-weight: 600;">8× markup</span>
+                </div>
+
+                <div class="price-item" style="margin-top: 1rem;">
+                    <span><strong>Predictive Segments API</strong></span>
+                    <span class="cost">$5.00/segment/month</span>
+                </div>
+                <div class="price-item">
+                    <span>└─ Infrastructure cost: ~$0.50 (continuous recomputation)</span>
+                    <span style="color: #10b981; font-weight: 600;">10× markup</span>
+                </div>
+
+                <div class="price-item" style="margin-top: 1rem;">
+                    <span><strong>Insights AI API</strong></span>
+                    <span class="cost">$1.00/insight</span>
+                </div>
+                <div class="price-item">
+                    <span>└─ Infrastructure cost: ~$0.20 (LLM inference)</span>
+                    <span style="color: #10b981; font-weight: 600;">5× markup</span>
+                </div>
+            </div>
+
+            <div class="notes" style="margin-top: 1rem;">
+                <strong>Why Premium Pricing Works:</strong><br>
+                • Unique differentiation (competitors don't have these)<br>
+                • High customer value (CLV prediction worth $1000s in better targeting)<br>
+                • GPU/ML infrastructure costs justify markup<br>
+                • Enterprise-only beta access drives tier upgrades
+            </div>
+        </div>
+
+        <!-- Margin Analysis Table -->
+        <div class="section">
+            <h2>📈 Tier Margin Analysis (Option B: À La Carte Add-ons)</h2>
+
+            <h3 style="margin-top: 1.5rem; color: #991b1b;">Cost Breakdown by Tier</h3>
+            <table class="cost-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th class="number">Profiles</th>
+                        <th class="number">Events</th>
+                        <th class="number">Custom Objects</th>
+                        <th class="number">Email</th>
+                        <th class="number">SMS</th>
+                        <th class="number">Other APIs</th>
+                        <th class="number">Total Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tier-name">Starter</td>
+                        <td class="number">$0.08</td>
+                        <td class="number">$7.00</td>
+                        <td class="number">$0.05</td>
+                        <td class="number">$0.05</td>
+                        <td class="number">$0.00</td>
+                        <td class="number">$0.50</td>
+                        <td class="number">$7.68</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-name">Growth</td>
+                        <td class="number">$0.40</td>
+                        <td class="number">$70.00</td>
+                        <td class="number">$0.50</td>
+                        <td class="number">$0.50</td>
+                        <td class="number">$8.50</td>
+                        <td class="number">$2.00</td>
+                        <td class="number">$81.90</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-name">Scale</td>
+                        <td class="number">$2.00</td>
+                        <td class="number">$350.00</td>
+                        <td class="number">$2.50</td>
+                        <td class="number">$5.00</td>
+                        <td class="number">$85.00</td>
+                        <td class="number">$5.00</td>
+                        <td class="number">$449.50</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-name">Enterprise</td>
+                        <td class="number">$10.00</td>
+                        <td class="number">$3,500.00</td>
+                        <td class="number">$10.00</td>
+                        <td class="number">$25.00</td>
+                        <td class="number">$425.00</td>
+                        <td class="number">$20.00</td>
+                        <td class="number">$3,990.00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 1.5rem; color: #065f46;">Revenue (Base Tier Only, No Add-ons)</h3>
+            <table class="revenue-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th class="number">Base Price</th>
+                        <th class="number">Potential Add-on Revenue</th>
+                        <th class="number">Total Potential</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tier-name">Starter</td>
+                        <td class="number">$49.00</td>
+                        <td class="number">$30-160</td>
+                        <td class="number">$79-209</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-name">Growth</td>
+                        <td class="number">$249.00</td>
+                        <td class="number">$50-465</td>
+                        <td class="number">$299-714</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-name">Scale</td>
+                        <td class="number">$899.00</td>
+                        <td class="number">$100-830</td>
+                        <td class="number">$999-1,729</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-name">Enterprise</td>
+                        <td class="number">$12,000.00</td>
+                        <td class="number">Intelligence: $500-5,000/mo</td>
+                        <td class="number">$12,500-17,000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 1.5rem; color: #1e40af;">Gross Margin Analysis</h3>
+            <table class="margin-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th class="number">Base Margin</th>
+                        <th class="number">With Typical Add-ons</th>
+                        <th class="number">With All Add-ons</th>
+                        <th>Assessment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tier-name">Starter</td>
+                        <td class="number margin-good">84%</td>
+                        <td class="number margin-good">~87%</td>
+                        <td class="number margin-good">~89%</td>
+                        <td class="margin-good">✓ Excellent - low infra cost</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-name">Growth</td>
+                        <td class="number margin-good">67%</td>
+                        <td class="number margin-good">~72%</td>
+                        <td class="number margin-good">~75%</td>
+                        <td class="margin-good">✓ Healthy - add-ons boost margin</td>
+                    </tr>
+                    <tr>
+                        <td class="tier-name">Scale</td>
+                        <td class="number margin-good">50%</td>
+                        <td class="number margin-good">~58%</td>
+                        <td class="number margin-good">~65%</td>
+                        <td class="margin-good">✓ Solid - volume efficiencies</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td class="tier-name">Enterprise</td>
+                        <td class="number margin-good">67%</td>
+                        <td class="number margin-good">~70%</td>
+                        <td class="number margin-good">~75%</td>
+                        <td class="margin-good">✓ Excellent - Intelligence premium</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="notes" style="margin-top: 1rem;">
+                <strong>Key Insights:</strong><br>
+                • <strong>Starter tier:</strong> 84% base margin - infrastructure almost free at this scale<br>
+                • <strong>Growth tier:</strong> 67% base → 75% with add-ons - clear upsell opportunity<br>
+                • <strong>Scale tier:</strong> 50% base → 65% with add-ons - healthy despite event volume<br>
+                • <strong>Enterprise:</strong> Intelligence features drive 70-75% margins (premium pricing)<br>
+                • <strong>Add-on impact:</strong> Each add-on increases ARPU by $25-300 with 85-95% margin
+            </div>
+        </div>
+
+        <!-- Example Customer Scenarios -->
+        <div class="section">
+            <h2>🎯 Example Customer Scenarios</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 1rem;">Growth Tier Customer</h3>
+                    <table>
+                        <tr>
+                            <td><strong>Base tier:</strong></td>
+                            <td class="number">$249/mo</td>
+                        </tr>
+                        <tr>
+                            <td>+ Segments add-on (100):</td>
+                            <td class="number">$50/mo</td>
+                        </tr>
+                        <tr>
+                            <td>+ Campaigns add-on (50):</td>
+                            <td class="number">$100/mo</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Total revenue:</strong></td>
+                            <td class="number"><strong>$399/mo</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Infrastructure cost:</td>
+                            <td class="number">$81.90</td>
+                        </tr>
+                        <tr>
+                            <td>Add-on costs:</td>
+                            <td class="number">$15.50</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gross margin:</strong></td>
+                            <td class="number margin-good"><strong>76%</strong></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 1rem;">Enterprise Customer</h3>
+                    <table>
+                        <tr>
+                            <td><strong>Base tier:</strong></td>
+                            <td class="number">$12,000/mo</td>
+                        </tr>
+                        <tr>
+                            <td>+ CLV Predictions (5K/mo):</td>
+                            <td class="number">$2,500/mo</td>
+                        </tr>
+                        <tr>
+                            <td>+ Predictive Segments (10):</td>
+                            <td class="number">$50/mo</td>
+                        </tr>
+                        <tr>
+                            <td>+ Insights AI (100/mo):</td>
+                            <td class="number">$100/mo</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Total revenue:</strong></td>
+                            <td class="number"><strong>$14,650/mo</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Infrastructure cost:</td>
+                            <td class="number">$3,990.00</td>
+                        </tr>
+                        <tr>
+                            <td>Intelligence costs:</td>
+                            <td class="number">$275.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gross margin:</strong></td>
+                            <td class="number margin-good"><strong>71%</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

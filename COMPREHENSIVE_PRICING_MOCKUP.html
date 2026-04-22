@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klaviyo Developer Platform - Complete Pricing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            background: #1e293b;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem 2rem;
+            color: #94a3b8;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            background: #334155;
+            color: white;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .legend {
+            background: #f1f5f9;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-available {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .badge-future {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #f59e0b;
+        }
+
+        .badge-addon {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+
+        .pricing-grid {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1600px;
+        }
+
+        thead {
+            background: #1e293b;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-right: 1px solid #334155;
+        }
+
+        th:first-child {
+            position: sticky;
+            left: 0;
+            background: #1e293b;
+            z-index: 11;
+            min-width: 140px;
+        }
+
+        .layer-header {
+            background: #0f172a;
+            text-align: center;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.5rem 1rem;
+        }
+
+        .api-header {
+            font-size: 0.875rem;
+            padding: 0.75rem 0.5rem;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #f8fafc;
+        }
+
+        tbody tr:hover {
+            background: #f1f5f9;
+        }
+
+        td {
+            padding: 1rem;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+            font-size: 0.875rem;
+        }
+
+        td:first-child {
+            position: sticky;
+            left: 0;
+            background: white;
+            font-weight: 600;
+            z-index: 5;
+            min-width: 140px;
+        }
+
+        tbody tr:nth-child(odd) td:first-child {
+            background: #f8fafc;
+        }
+
+        tbody tr:hover td:first-child {
+            background: #f1f5f9;
+        }
+
+        .tier-name {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .tier-price {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .included {
+            color: #065f46;
+            font-weight: 500;
+        }
+
+        .not-available {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .addon-cell {
+            color: #1e40af;
+            font-weight: 500;
+        }
+
+        .future-cell {
+            color: #92400e;
+            font-style: italic;
+        }
+
+        .limit {
+            display: block;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: #667eea;
+            font-size: 0.7rem;
+            margin-left: 0.25rem;
+        }
+
+        .tooltip::before {
+            content: "ℹ️";
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .model-description {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .model-description h3 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .model-description p {
+            color: #64748b;
+        }
+
+        .consumption-pricing, .credits-pricing {
+            padding: 2rem;
+        }
+
+        .pricing-table {
+            margin-top: 2rem;
+        }
+
+        .pricing-table h3 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .price-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .price-card h4 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .price-item:last-child {
+            border-bottom: none;
+        }
+
+        .price-value {
+            font-family: 'Monaco', monospace;
+            font-weight: 600;
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Klaviyo Developer Platform - Consumption Pricing</h1>
+            <p>Composable Infrastructure with Transparent Pricing</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('tiered')">Model 1: Tiered Bundles</button>
+            <button class="tab" onclick="switchTab('consumption')">Model 2: Pure Consumption</button>
+            <button class="tab" onclick="switchTab('credits')">Model 3: Credits System</button>
+        </div>
+
+        <!-- Model 1: Tiered Bundles -->
+        <div id="tiered-content" class="tab-content active">
+            <div class="model-description">
+                <h3>Model 1: Tiered Bundle Pricing</h3>
+                <p>Simple monthly tiers with predictable pricing. Core infrastructure included, add-ons available for advanced features. Best for: Predictable workloads and easy budgeting.</p>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-badge badge-available">Available Today</span>
+                    <span>Production-ready APIs</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-badge badge-future">Future/Beta</span>
+                    <span>Planned or experimental</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-badge badge-addon">Add-on</span>
+                    <span>Available as add-on pricing</span>
+                </div>
+            </div>
+
+            <div class="pricing-grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Tier</th>
+                            <th colspan="9" class="layer-header">Core Data Infrastructure</th>
+                            <th colspan="3" class="layer-header">Core Messaging Infrastructure</th>
+                            <th colspan="6" class="layer-header">Add-ons (Composable Features)</th>
+                            <th colspan="6" class="layer-header">Intelligence (AI/ML)</th>
+                        </tr>
+                        <tr>
+                            <!-- Data Infrastructure -->
+                            <th class="api-header">Profiles<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Events<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Custom Objects<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Lists<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Tags<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Webhooks<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Web Feeds<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Client SDK<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Metrics<br><span class="status-badge badge-available">Available</span></th>
+
+                            <!-- Messaging Infrastructure -->
+                            <th class="api-header">Templates<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">Email Send<br><span class="status-badge badge-available">Available</span></th>
+                            <th class="api-header">SMS Send<br><span class="status-badge badge-available">Available</span></th>
+
+                            <!-- Add-ons -->
+                            <th class="api-header">Segments<br><span class="status-badge badge-addon">Add-on</span></th>
+                            <th class="api-header">Catalogs<br><span class="status-badge badge-addon">Add-on</span></th>
+                            <th class="api-header">Campaigns<br><span class="status-badge badge-addon">Add-on</span></th>
+                            <th class="api-header">Flows<br><span class="status-badge badge-addon">Add-on</span></th>
+                            <th class="api-header">Forms<br><span class="status-badge badge-addon">Add-on</span></th>
+                            <th class="api-header">Reporting<br><span class="status-badge badge-available">Available</span></th>
+
+                            <!-- Intelligence -->
+                            <th class="api-header">CLV Prediction<br><span class="status-badge badge-future">Future</span></th>
+                            <th class="api-header">Churn Predict<br><span class="status-badge badge-future">Future</span></th>
+                            <th class="api-header">Send Time AI<br><span class="status-badge badge-future">Future</span></th>
+                            <th class="api-header">Recommendations<br><span class="status-badge badge-future">Future</span></th>
+                            <th class="api-header">Predictive Segments<br><span class="status-badge badge-future">Future</span></th>
+                            <th class="api-header">Insights AI<br><span class="status-badge badge-future">Future</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Free Tier -->
+                        <tr>
+                            <td>
+                                <div class="tier-name">Free</div>
+                                <div class="tier-price">$0/month</div>
+                            </td>
+                            <!-- Data Infra -->
+                            <td class="included">✓<span class="limit">500 profiles</span></td>
+                            <td class="included">✓<span class="limit">50K events/mo</span></td>
+                            <td class="not-available">—</td>
+                            <td class="included">✓<span class="limit">10 lists</span></td>
+                            <td class="included">✓<span class="limit">20 tags</span></td>
+                            <td class="not-available">—</td>
+                            <td class="not-available">—</td>
+                            <td class="included">✓<span class="limit">Basic SDK</span></td>
+                            <td class="included">✓ Super Basic<span class="limit tooltip" data-tooltip="Read-only dashboards, 7-day retention, daily aggregation"></span></td>
+                            <!-- Messaging -->
+                            <td class="not-available">—</td>
+                            <td class="not-available">—</td>
+                            <td class="not-available">—</td>
+                            <!-- Add-ons -->
+                            <td class="not-available">—</td>
+                            <td class="not-available">—</td>
+                            <td class="not-available">—</td>
+                            <td class="not-available">—</td>
+                            <td class="not-available">—</td>
+                            <td class="not-available">—</td>
+                            <!-- Intelligence -->
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                        </tr>
+
+                        <!-- Starter Tier -->
+                        <tr>
+                            <td>
+                                <div class="tier-name">Starter</div>
+                                <div class="tier-price">$49/month</div>
+                            </td>
+                            <!-- Data Infra -->
+                            <td class="included">✓<span class="limit">2K profiles</span></td>
+                            <td class="included">✓<span class="limit">200K events/mo</span></td>
+                            <td class="included">✓<span class="limit">10K records</span></td>
+                            <td class="included">✓<span class="limit">50 lists</span></td>
+                            <td class="included">✓<span class="limit">100 tags</span></td>
+                            <td class="included">✓<span class="limit">10 webhooks</span></td>
+                            <td class="included">✓<span class="limit">5 feeds</span></td>
+                            <td class="included">✓<span class="limit">Full SDK</span></td>
+                            <td class="included">✓ Basic<span class="limit tooltip" data-tooltip="Daily aggregation, 30-day retention, pre-defined metrics"></span></td>
+                            <!-- Messaging -->
+                            <td class="included">✓<span class="limit">10 templates</span></td>
+                            <td class="included">✓<span class="limit">2K emails/mo</span></td>
+                            <td class="not-available">—</td>
+                            <!-- Add-ons -->
+                            <td class="addon-cell">Add-on<span class="limit">$30/mo (50 segments)</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$25/mo (1K items)</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$40/mo (10 campaigns)</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$50/mo (5 flows)</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$15/mo (5 forms)</span></td>
+                            <td class="included">✓<span class="limit">Basic reports</span></td>
+                            <!-- Intelligence -->
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                        </tr>
+
+                        <!-- Growth Tier -->
+                        <tr>
+                            <td>
+                                <div class="tier-name">Growth</div>
+                                <div class="tier-price">$249/month</div>
+                            </td>
+                            <!-- Data Infra -->
+                            <td class="included">✓<span class="limit">10K profiles</span></td>
+                            <td class="included">✓<span class="limit">2M events/mo</span></td>
+                            <td class="included">✓<span class="limit">100K records</span></td>
+                            <td class="included">✓<span class="limit">200 lists</span></td>
+                            <td class="included">✓<span class="limit">500 tags</span></td>
+                            <td class="included">✓<span class="limit">50 webhooks</span></td>
+                            <td class="included">✓<span class="limit">20 feeds</span></td>
+                            <td class="included">✓<span class="limit">Full SDK</span></td>
+                            <td class="included">✓ Advanced<span class="limit tooltip" data-tooltip="Hourly aggregation, 90-day retention, custom metrics"></span></td>
+                            <!-- Messaging -->
+                            <td class="included">✓<span class="limit">50 templates</span></td>
+                            <td class="included">✓<span class="limit">20K emails/mo</span></td>
+                            <td class="included">✓<span class="limit">1K SMS/mo</span></td>
+                            <!-- Add-ons -->
+                            <td class="addon-cell">Add-on<span class="limit">$50/mo (100 segments)</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$75/mo (10K items)</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$100/mo (50 campaigns)</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$150/mo (20 flows)</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$40/mo (10 forms)</span></td>
+                            <td class="included">✓<span class="limit">Advanced reports</span></td>
+                            <!-- Intelligence -->
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                        </tr>
+
+                        <!-- Scale Tier -->
+                        <tr>
+                            <td>
+                                <div class="tier-name">Scale</div>
+                                <div class="tier-price">$899/month</div>
+                            </td>
+                            <!-- Data Infra -->
+                            <td class="included">✓<span class="limit">50K profiles</span></td>
+                            <td class="included">✓<span class="limit">10M events/mo</span></td>
+                            <td class="included">✓<span class="limit">500K records</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">100 webhooks</span></td>
+                            <td class="included">✓<span class="limit">50 feeds</span></td>
+                            <td class="included">✓<span class="limit">Full SDK</span></td>
+                            <td class="included">✓ Real-time<span class="limit tooltip" data-tooltip="Streaming, 1-year retention, unlimited custom metrics"></span></td>
+                            <!-- Messaging -->
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">200K emails/mo</span></td>
+                            <td class="included">✓<span class="limit">10K SMS/mo</span></td>
+                            <!-- Add-ons -->
+                            <td class="included">✓<span class="limit">500 segments</span></td>
+                            <td class="addon-cell">Add-on<span class="limit">$150/mo (50K+ items)</span></td>
+                            <td class="included">✓<span class="limit">200 campaigns</span></td>
+                            <td class="included">✓<span class="limit">100 flows</span></td>
+                            <td class="included">✓<span class="limit">50 forms</span></td>
+                            <td class="included">✓<span class="limit">Real-time reports</span></td>
+                            <!-- Intelligence -->
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                            <td class="future-cell">Future</td>
+                        </tr>
+
+                        <!-- Enterprise Tier -->
+                        <tr>
+                            <td>
+                                <div class="tier-name">Enterprise</div>
+                                <div class="tier-price">$12,000/month</div>
+                            </td>
+                            <!-- Data Infra -->
+                            <td class="included">✓<span class="limit">250K profiles</span></td>
+                            <td class="included">✓<span class="limit">100M events/mo</span></td>
+                            <td class="included">✓<span class="limit">2M records</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Full SDK</span></td>
+                            <td class="included">✓ Enterprise<span class="limit tooltip" data-tooltip="Real-time + custom SLAs + dedicated support"></span></td>
+                            <!-- Messaging -->
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">1M emails/mo</span></td>
+                            <td class="included">✓<span class="limit">50K SMS/mo</span></td>
+                            <!-- Add-ons -->
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Unlimited</span></td>
+                            <td class="included">✓<span class="limit">Enterprise reports</span></td>
+                            <!-- Intelligence -->
+                            <td class="included">✓ Beta<span class="limit">$0.50/prediction</span></td>
+                            <td class="included">✓ Beta<span class="limit">$0.50/prediction</span></td>
+                            <td class="included">✓ Beta<span class="limit">$0.10/optimization</span></td>
+                            <td class="included">✓ Beta<span class="limit">$0.25/set</span></td>
+                            <td class="included">✓ Beta<span class="limit">$5/segment/mo</span></td>
+                            <td class="included">✓ Beta<span class="limit">$1/insight</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Model 2: Pure Consumption -->
+        <div id="consumption-content" class="tab-content">
+            <div class="model-description">
+                <h3>Model 2: Pure Consumption Pricing</h3>
+                <p>Pay only for what you use - no base fees, no tiers. Best for: Variable workloads, spiky usage, or customers who want exact usage-based pricing.</p>
+            </div>
+
+            <div class="consumption-pricing">
+                <div class="pricing-table">
+                    <h3>Free Tier (Always Free)</h3>
+                    <div class="price-grid">
+                        <div class="price-card">
+                            <h4>Core Infrastructure</h4>
+                            <div class="price-item">
+                                <span>Profiles</span>
+                                <span class="price-value">500 free</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Events</span>
+                                <span class="price-value">50K/mo free</span>
+                            </div>
+                            <div class="price-item">
+                                <span>API Calls</span>
+                                <span class="price-value">100K/mo free</span>
+                            </div>
+                        </div>
+                        <div class="price-card">
+                            <h4>After Free Threshold</h4>
+                            <div class="price-item">
+                                <span>First $50 usage</span>
+                                <span class="price-value">FREE</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Then pay per unit</span>
+                                <span class="price-value">See below →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pricing-table">
+                    <h3>Unit Pricing (After Free Tier)</h3>
+                    <div class="price-grid">
+                        <div class="price-card">
+                            <h4>Core Data Infrastructure</h4>
+                            <div class="price-item">
+                                <span>Profiles (per 1K/month)</span>
+                                <span class="price-value">$0.15</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Events (per 100K)</span>
+                                <span class="price-value">$12.00</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Custom Objects (per 1K records/mo)</span>
+                                <span class="price-value">$0.50</span>
+                            </div>
+                            <div class="price-item">
+                                <span>API Calls (per 10K)</span>
+                                <span class="price-value">$2.00</span>
+                            </div>
+                        </div>
+
+                        <div class="price-card">
+                            <h4>Messaging Infrastructure</h4>
+                            <div class="price-item">
+                                <span>Emails (per 1K)</span>
+                                <span class="price-value">$0.10</span>
+                            </div>
+                            <div class="price-item">
+                                <span>SMS (per message)</span>
+                                <span class="price-value">$0.012</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Templates (per template/mo)</span>
+                                <span class="price-value">$0.10</span>
+                            </div>
+                        </div>
+
+                        <div class="price-card">
+                            <h4>Add-on Features</h4>
+                            <div class="price-item">
+                                <span>Segments (per segment/month)</span>
+                                <span class="price-value">$0.13</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Catalogs (per 1K items/mo)</span>
+                                <span class="price-value">$1.00</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Campaigns (per campaign)</span>
+                                <span class="price-value">$2.00</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Flows (per flow/month)</span>
+                                <span class="price-value">$5.00</span>
+                            </div>
+                        </div>
+
+                        <div class="price-card" style="background: #ede9fe; border-color: #7c3aed;">
+                            <h4>Intelligence (Premium)</h4>
+                            <div class="price-item">
+                                <span>CLV Predictions</span>
+                                <span class="price-value">$0.50/each</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Churn Predictions</span>
+                                <span class="price-value">$0.50/each</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Send Time Optimization</span>
+                                <span class="price-value">$0.10/each</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Product Recommendations</span>
+                                <span class="price-value">$0.25/set</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model 3: Credits -->
+        <div id="credits-content" class="tab-content">
+            <div class="model-description">
+                <h3>Model 3: Credits-Based Pricing</h3>
+                <p>Purchase credits upfront and use them flexibly across any API. Best for: Budget control, prepaid models, and customers who want volume discounts.</p>
+            </div>
+
+            <div class="credits-pricing">
+                <div class="pricing-table">
+                    <h3>Free Credits (Monthly)</h3>
+                    <div class="price-grid">
+                        <div class="price-card">
+                            <h4>Free Tier</h4>
+                            <div class="price-item">
+                                <span>Monthly free credits</span>
+                                <span class="price-value">50,000 credits</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Equivalent to</span>
+                                <span class="price-value">~500 profiles + 50K events</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pricing-table">
+                    <h3>Credit Packages</h3>
+                    <div class="price-grid">
+                        <div class="price-card">
+                            <h4>Starter Package</h4>
+                            <div class="price-item">
+                                <span>50,000 credits</span>
+                                <span class="price-value">$50</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Cost per credit</span>
+                                <span class="price-value">$0.0010</span>
+                            </div>
+                        </div>
+
+                        <div class="price-card">
+                            <h4>Growth Package</h4>
+                            <div class="price-item">
+                                <span>500,000 credits</span>
+                                <span class="price-value">$400</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Cost per credit</span>
+                                <span class="price-value">$0.0008</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Savings</span>
+                                <span class="price-value" style="color: #10b981;">20% vs Starter</span>
+                            </div>
+                        </div>
+
+                        <div class="price-card">
+                            <h4>Scale Package</h4>
+                            <div class="price-item">
+                                <span>2,000,000 credits</span>
+                                <span class="price-value">$1,400</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Cost per credit</span>
+                                <span class="price-value">$0.0007</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Savings</span>
+                                <span class="price-value" style="color: #10b981;">30% vs Starter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pricing-table">
+                    <h3>Credit Costs Per Unit</h3>
+                    <div class="price-grid">
+                        <div class="price-card">
+                            <h4>Core Infrastructure</h4>
+                            <div class="price-item">
+                                <span>Profiles (per 1K/month)</span>
+                                <span class="price-value">150 credits</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Events (per 100K)</span>
+                                <span class="price-value">12,000 credits</span>
+                            </div>
+                            <div class="price-item">
+                                <span>API Calls (per 10K)</span>
+                                <span class="price-value">2,000 credits</span>
+                            </div>
+                        </div>
+
+                        <div class="price-card">
+                            <h4>Messaging</h4>
+                            <div class="price-item">
+                                <span>Emails (per 1K)</span>
+                                <span class="price-value">100 credits</span>
+                            </div>
+                            <div class="price-item">
+                                <span>SMS (per message)</span>
+                                <span class="price-value">12 credits</span>
+                            </div>
+                        </div>
+
+                        <div class="price-card">
+                            <h4>Add-ons & Intelligence</h4>
+                            <div class="price-item">
+                                <span>Segments (per segment/mo)</span>
+                                <span class="price-value">130 credits</span>
+                            </div>
+                            <div class="price-item">
+                                <span>CLV Prediction</span>
+                                <span class="price-value">500 credits</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(model) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(model + '-content').classList.add('active');
+        }
+    </script>
+</body>
+</html>
