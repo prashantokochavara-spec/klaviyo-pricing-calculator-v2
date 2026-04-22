@@ -520,7 +520,28 @@
         .tooltip {
             position: relative;
             cursor: help;
-            border-bottom: 1px dotted currentColor;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            margin-left: 4px;
+            font-size: 11px;
+            color: #64748b;
+            background-color: #e2e8f0;
+            border-radius: 50%;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .tooltip:hover {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .tooltip::before {
+            content: 'i';
+            font-style: italic;
         }
 
         .tooltip:hover::after {
@@ -537,6 +558,7 @@
             white-space: nowrap;
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            margin-bottom: 8px;
         }
 
         .status-badge {
